@@ -24,5 +24,14 @@ namespace PicoShelter_DesktopApp
         {
             InitializeComponent();
         }
+
+        void mainHeader_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed) this.DragMove();
+        }
+
+        void mainExit_Click(object sender, RoutedEventArgs e) => this.Close();
+
+        void mainMinimize_Click(object sender, RoutedEventArgs e) => this.WindowState = WindowState.Minimized;
     }
 }

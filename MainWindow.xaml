@@ -5,8 +5,92 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PicoShelter_DesktopApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="PicoShelter Desktop" Height="450" Width="800"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="600" MinHeight="380">
 
+    <Window.Resources>
+        <ControlTemplate x:Key="ButtonWithOverBackground" TargetType="Button">
+            <Border Background="{TemplateBinding Background}">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="headerBtn" TargetType="Button">
+            <Setter Property="Template" Value="{StaticResource ButtonWithOverBackground}"></Setter>
+
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3D9AEC"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="appHeader" MouseDown="mainHeader_MouseDown" Grid.Row="0" Background="#4FACFE">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="25"></ColumnDefinition>
+                <ColumnDefinition Width="25"></ColumnDefinition>
+                <ColumnDefinition Width="25"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="-90" RenderingBias="Performance" ShadowDepth="1" Color="#3D9AEC"/>
+            </Grid.Effect>
+            <Grid.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource headerBtn}"></Style>
+            </Grid.Resources>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <!--<Image Source="Logo.png" Height="25"></Image>-->
+                <TextBlock Foreground="White" FontSize="17" FontWeight="ExtraLight" FontStyle="Italic" Margin="5 0 0 0">#</TextBlock>
+                <TextBlock Foreground="White" FontSize="17" Margin="5 0 0 0">
+                    <Run FontWeight="Bold" FontStyle="Italic">PicoShelter</Run>
+                    <Run FontWeight="ExtraLight" FontStyle="Italic">Uploader</Run>
+                </TextBlock>
+            </StackPanel>
+
+            <Button x:Name="mainSettings" Grid.Column="1">⚙</Button>
+            <Button x:Name="mainMinimize" Click="mainMinimize_Click" Grid.Column="2">_</Button>
+            <Button x:Name="mainExit" Click="mainExit_Click" Grid.Column="3" Content="X">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource headerBtn}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Red"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="1"
+              Margin="30 15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="13*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TextBlock FontSize="20" Text="{Binding CurrentPage.Title}" Grid.ColumnSpan="2" Margin="0,0,0,368" Grid.RowSpan="2"></TextBlock>
+
+            <Frame Grid.Row="1"
+               NavigationUIVisibility="Hidden"
+               Content="{Binding CurrentPage}" Grid.ColumnSpan="2"></Frame>
+        </Grid>
     </Grid>
 </Window>
