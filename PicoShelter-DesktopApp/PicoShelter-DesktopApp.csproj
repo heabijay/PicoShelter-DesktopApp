@@ -5,6 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <RootNamespace>PicoShelter_DesktopApp</RootNamespace>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Icon + Shadow.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

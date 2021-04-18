@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,11 @@ namespace PicoShelter_DesktopApp.Pages
         private void btnGoBack_Click(object sender, RoutedEventArgs e)
         {
             Owner.ToBack();
+        }
+
+        private void btnGoResetPassword_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {ServerRouting.WebAppRouting.ResetPasswordUrl}") { CreateNoWindow = true });
         }
     }
 }

@@ -49,8 +49,8 @@
         <Grid x:Name="appHeader" MouseDown="mainHeader_MouseDown" Grid.Row="0">
             <Grid.Background>
                 <LinearGradientBrush>
-                    <GradientStop Color="#4facfe" Offset="0"></GradientStop>
-                    <GradientStop Color="#00f2fe" Offset="1"></GradientStop>
+                    <GradientStop Color="#4FACFE" Offset="0"></GradientStop>
+                    <GradientStop Color="#66a6ff" Offset="1"></GradientStop>
                 </LinearGradientBrush>
             </Grid.Background>
             <Grid.ColumnDefinitions>
