@@ -19,22 +19,8 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
                 return appSettings;
 
             appSettings = new AppSettings();
-
-
-            #region Settings Read
-
-            // appSettings.AccessToken
-            var enToken = registrySettings.GetValue(nameof(appSettings.AccessToken))?.ToString();
-            if (!string.IsNullOrWhiteSpace(enToken))
-            {
-                var enData = Convert.FromBase64String(enToken);
-                var decData = ProtectedData.Unprotect(enData, null, DataProtectionScope.LocalMachine);
-                appSettings.AccessToken = Encoding.Unicode.GetString(decData);
-            }
-
-            #endregion
-
-            appSettings.PropertyChanged += AppSettings_PropertyChanged;
+            ReadFromRegistry(appSettings);
+            appSettings.PropertyChanged += UpdateToRegistry;
 
             return appSettings;
         }
@@ -44,8 +30,34 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
             return await Task.Run(() => Provide());
         }
 
+        private static void ReadFromRegistry(AppSettings appSettings)
+        {
+            var values = registrySettings.GetValueNames();
+            foreach (var val in values)
+            {
+                if (val == nameof(appSettings.AccessToken))
+                {
+                    // appSettings.AccessToken
+                    var enToken = registrySettings.GetValue(nameof(appSettings.AccessToken))?.ToString();
+                    if (!string.IsNullOrWhiteSpace(enToken))
+                    {
+                        var enData = Convert.FromBase64String(enToken);
+                        var decData = ProtectedData.Unprotect(enData, null, DataProtectionScope.LocalMachine);
+                        appSettings.AccessToken = Encoding.Unicode.GetString(decData);
+                    }
+                }
+                else
+                {
+                    var prop = appSettings.GetType().GetProperty(val);
+                    if (prop != null)
+                    {
+                        prop.SetValue(appSettings, Convert.ChangeType(registrySettings.GetValue(val), prop.PropertyType));
+                    }
+                }
+            }
+        }
 
-        private static void AppSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private static void UpdateToRegistry(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var settings = sender as AppSettings;
             if (settings == null || e?.PropertyName == null)
