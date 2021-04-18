@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PicoShelter_DesktopApp"
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         mc:Ignorable="d"
         Title="PicoShelter Desktop" Height="450" Width="800"
         WindowStyle="None"
@@ -25,12 +26,19 @@
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#3D9AEC"></Setter>
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#000000" Opacity=".1"></SolidColorBrush>
+                        </Setter.Value>
+                    </Setter>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
 
+    <Window.DataContext>
+        <local:ApplicationViewModel></local:ApplicationViewModel>
+    </Window.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -38,7 +46,13 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="appHeader" MouseDown="mainHeader_MouseDown" Grid.Row="0" Background="#4FACFE">
+        <Grid x:Name="appHeader" MouseDown="mainHeader_MouseDown" Grid.Row="0">
+            <Grid.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#4facfe" Offset="0"></GradientStop>
+                    <GradientStop Color="#00f2fe" Offset="1"></GradientStop>
+                </LinearGradientBrush>
+            </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="25"></ColumnDefinition>
@@ -54,11 +68,12 @@
 
             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
                 <!--<Image Source="Logo.png" Height="25"></Image>-->
-                <TextBlock Foreground="White" FontSize="17" FontWeight="ExtraLight" FontStyle="Italic" Margin="5 0 0 0">#</TextBlock>
+                <!--<TextBlock Foreground="White" FontSize="17" FontWeight="ExtraLight" FontStyle="Italic" Margin="5 0 0 0">#</TextBlock>
                 <TextBlock Foreground="White" FontSize="17" Margin="5 0 0 0">
                     <Run FontWeight="Bold" FontStyle="Italic">PicoShelter</Run>
                     <Run FontWeight="ExtraLight" FontStyle="Italic">Uploader</Run>
-                </TextBlock>
+                </TextBlock>-->
+                <svgc:SvgViewbox UriSource="/Resources/Icons/White Icon + Text.svg" Margin="2"/>
             </StackPanel>
 
             <Button x:Name="mainSettings" Grid.Column="1">⚙</Button>
@@ -75,22 +90,9 @@
                 </Button.Style>
             </Button>
         </Grid>
-        <Grid Grid.Row="1"
-              Margin="30 15">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="13*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <TextBlock FontSize="20" Text="{Binding CurrentPage.Title}" Grid.ColumnSpan="2" Margin="0,0,0,368" Grid.RowSpan="2"></TextBlock>
-
-            <Frame Grid.Row="1"
+        <Frame Grid.Row="1"
+               Margin="30 15"
                NavigationUIVisibility="Hidden"
                Content="{Binding CurrentPage}" Grid.ColumnSpan="2"></Frame>
-        </Grid>
     </Grid>
 </Window>

@@ -7,4 +7,21 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Black Icon + Shadow.svg" />
+    <Resource Include="Resources\Icons\Black Icon + Text + Shadow.svg" />
+    <Resource Include="Resources\Icons\Black Icon + Text.svg" />
+    <Resource Include="Resources\Icons\Black Icon.svg" />
+    <Resource Include="Resources\Icons\Icon + Shadow.svg" />
+    <Resource Include="Resources\Icons\Icon.svg" />
+    <Resource Include="Resources\Icons\White Icon + Shadow.svg" />
+    <Resource Include="Resources\Icons\White Icon + Text + Shadow.svg" />
+    <Resource Include="Resources\Icons\White Icon + Text.svg" />
+    <Resource Include="Resources\Icons\White Icon.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpVectors" Version="1.7.1" />
+  </ItemGroup>
+
 </Project>
