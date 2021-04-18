@@ -23,6 +23,7 @@ namespace PicoShelter_DesktopApp
         public MainWindow()
         {
             InitializeComponent();
+            (this.DataContext as ApplicationViewModel).Owner = this;
         }
 
         void mainHeader_MouseDown(object sender, MouseButtonEventArgs e)

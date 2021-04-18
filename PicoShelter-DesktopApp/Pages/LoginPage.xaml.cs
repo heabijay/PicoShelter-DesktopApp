@@ -16,9 +16,9 @@ using System.Windows.Shapes;
 namespace PicoShelter_DesktopApp.Pages
 {
     /// <summary>
-    /// Interaction logic for WelcomePage.xaml
+    /// Interaction logic for LoginPage.xaml
     /// </summary>
-    public partial class WelcomePage : Page
+    public partial class LoginPage : Page
     {
         private ApplicationViewModel owner;
         public ApplicationViewModel Owner
@@ -26,25 +26,21 @@ namespace PicoShelter_DesktopApp.Pages
             get => owner;
             set => owner = value;
         }
-
-        public WelcomePage()
+        
+        public LoginPage()
         {
             InitializeComponent();
         }
 
-        public WelcomePage(ApplicationViewModel owner) : this()
+        public LoginPage(ApplicationViewModel owner) : this()
         {
             this.Owner = owner;
         }
 
-        private void btnContinueAnonymous_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
-
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private void btnGoBack_Click(object sender, RoutedEventArgs e)
         {
-            owner.ToLogin();
+            Owner.ToBack();
         }
     }
 }
