@@ -3,13 +3,15 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace PicoShelter_DesktopApp.Services.AppSettings
 {
-    static class AppSettingsProvider
+    public static class AppSettingsProvider
     {
         private static AppSettings appSettings;
-        private static RegistryKey registrySettings = Registry.LocalMachine.OpenSubKey("SOFTWARE").CreateSubKey("PicoShelterUploader");
+        private static RegistryKey registrySettings = Registry.LocalMachine.OpenSubKey("SOFTWARE", true).CreateSubKey("PicoShelterUploader", true);
 
         public static AppSettings Provide()
         {
@@ -22,7 +24,7 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
             #region Settings Read
 
             // appSettings.AccessToken
-            var enToken = registrySettings.GetValue(appSettings.AccessToken.GetType().ToString())?.ToString();
+            var enToken = registrySettings.GetValue(nameof(appSettings.AccessToken))?.ToString();
             if (!string.IsNullOrWhiteSpace(enToken))
             {
                 var enData = Convert.FromBase64String(enToken);
@@ -46,16 +48,28 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
         private static void AppSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var settings = sender as AppSettings;
-            if (settings == null)
+            if (settings == null || e?.PropertyName == null)
                 throw new ArgumentNullException();
 
-            if (e.PropertyName == settings.AccessToken.GetType().Name)
+            if (e.PropertyName == nameof(settings.AccessToken) && settings.AccessToken != null)
             {
+                var bytes = Encoding.Unicode.GetBytes(settings.AccessToken);
+                var enData = ProtectedData.Protect(bytes, null, DataProtectionScope.LocalMachine);
+                var data = Convert.ToBase64String(enData);
 
+                registrySettings.SetValue(e.PropertyName, data);
             }
             else
             {
-                throw new ArgumentException();
+                var val = settings.GetType().GetProperty(e.PropertyName)?.GetValue(settings, null);
+                if (val != null)
+                {
+                    registrySettings.SetValue(e.PropertyName, val.ToString());
+                }
+                else
+                {
+                    registrySettings.DeleteValue(e.PropertyName);
+                }
             }
         }
     }

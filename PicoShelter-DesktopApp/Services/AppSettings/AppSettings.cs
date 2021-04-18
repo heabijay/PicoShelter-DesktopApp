@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace PicoShelter_DesktopApp.Services.AppSettings
 {
-    class AppSettings : INotifyPropertyChanged
+    public class AppSettings : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -16,7 +16,7 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
             get => accessToken;
             set
             {
-                accessToken = AccessToken;
+                accessToken = value;
                 OnPropertyChanged();
             }
         }
