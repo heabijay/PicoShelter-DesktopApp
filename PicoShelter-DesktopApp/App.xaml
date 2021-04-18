@@ -4,9 +4,6 @@
              xmlns:local="clr-namespace:PicoShelter_DesktopApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <FontFamily x:Key="FontAwesome-Light">/Resources/Fonts/fa-light-300.ttf#Font Awesome 5 Pro Light</FontFamily>
-        <FontFamily x:Key="FontAwesome-Regular">/Resources/Fonts/fa-regular-400.ttf#Font Awesome 5 Pro Regular</FontFamily>
-        <FontFamily x:Key="FontAwesome-Solid">/Resources/Fonts/fa-solid-900.ttf#Font Awesome 5 Pro Solid</FontFamily>
-        <FontFamily x:Key="FontAwesome-Brands">/Resources/Fonts/fa-brands-400.ttf#Font Awesome 5 Brands Regular</FontFamily>
+        
     </Application.Resources>
 </Application>
