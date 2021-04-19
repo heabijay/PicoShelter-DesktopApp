@@ -11,6 +11,10 @@
         WindowStartupLocation="CenterScreen"
         MinWidth="600" MinHeight="380">
 
+    <Window.DataContext>
+        <local:ApplicationViewModel></local:ApplicationViewModel>
+    </Window.DataContext>
+    
     <Window.Resources>
         <ControlTemplate x:Key="ButtonWithOverBackground" TargetType="Button">
             <Border Background="{TemplateBinding Background}">
@@ -35,10 +39,6 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-
-    <Window.DataContext>
-        <local:ApplicationViewModel></local:ApplicationViewModel>
-    </Window.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>

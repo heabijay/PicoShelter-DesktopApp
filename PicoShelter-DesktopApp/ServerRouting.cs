@@ -14,7 +14,8 @@ namespace PicoShelter_DesktopApp
             public const string ResetPasswordUrl = HomeUrl + "/login";
         }
 
-        public const string HomeUrl = "https://picoshelter-apiserver20210218164711.azurewebsites.net";
+        //public const string HomeUrl = "https://picoshelter-apiserver20210218164711.azurewebsites.net";
+        public const string HomeUrl = "https://localhost:5000";
         public const string LoginUrl = HomeUrl + "/api/Auth/login";
         public const string LoginByEmailUrl = HomeUrl + "/api/Auth/elogin";
         public const string GetCurrentUser = HomeUrl + "/api/Auth/getInfo";

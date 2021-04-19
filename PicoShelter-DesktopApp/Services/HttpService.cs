@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PicoShelter_DesktopApp.Services
 {
-    public class HttpService
+    public class HttpService : IHttpService
     {
         private HttpClient httpClient = new HttpClient();
 
@@ -22,20 +23,23 @@ namespace PicoShelter_DesktopApp.Services
 
         public HttpService()
         {
-
+            
         }
 
-        public HttpService(string accessToken)
+        public HttpService(string accessToken) : this()
         {
             AccessToken = accessToken;
         }
+
+        private static readonly HttpService instance = new HttpService();
+        public static HttpService Current => instance;
         
         public async Task<LoginResponseDto> LoginAsync(string username, string password)
         {
             var dto = new LoginRequestDto() { username = username, password = password };
             var sDto = JsonSerializer.Serialize(dto);
 
-            var result = await httpClient.PostAsync(ServerRouting.LoginUrl, new StringContent(sDto));
+            var result = await httpClient.PostAsync(ServerRouting.LoginUrl, new StringContent(sDto, Encoding.UTF8, "application/json"));
 
             var resultStream = await result.Content.ReadAsStreamAsync();
             var response = await JsonSerializer.DeserializeAsync<HttpResponseDto<LoginResponseDto>>(resultStream);
@@ -53,7 +57,7 @@ namespace PicoShelter_DesktopApp.Services
             var dto = new LoginByEmailRequestDto() { email = email, password = password };
             var sDto = JsonSerializer.Serialize(dto);
 
-            var result = await httpClient.PostAsync(ServerRouting.LoginByEmailUrl, new StringContent(sDto));
+            var result = await httpClient.PostAsync(ServerRouting.LoginByEmailUrl, new StringContent(sDto, Encoding.UTF8, "application/json"));
 
             var resultStream = await result.Content.ReadAsStreamAsync();
             var response = await JsonSerializer.DeserializeAsync<HttpResponseDto<LoginResponseDto>>(resultStream);

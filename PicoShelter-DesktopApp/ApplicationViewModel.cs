@@ -1,4 +1,6 @@
 ﻿using PicoShelter_DesktopApp.Pages;
+using PicoShelter_DesktopApp.Services;
+using PicoShelter_DesktopApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,11 +12,8 @@ using System.Windows.Controls;
 
 namespace PicoShelter_DesktopApp
 {
-    public class ApplicationViewModel : INotifyPropertyChanged
+    public class ApplicationViewModel : ViewModelBase
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-
         public ApplicationViewModel()
         {
             currentPage = new WelcomePage(this);
