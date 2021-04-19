@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PicoShelter_DesktopApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,35 +17,36 @@ using System.Windows.Shapes;
 namespace PicoShelter_DesktopApp.Pages
 {
     /// <summary>
-    /// Interaction logic for WelcomePage.xaml
+    /// Interaction logic for SettingsPage.xaml
     /// </summary>
-    public partial class WelcomePage : Page
+    public partial class SettingsPage : Page
     {
         private ApplicationViewModel owner;
         public ApplicationViewModel Owner
         {
             get => owner;
-            set => owner = value;
+            set
+            {
+                owner = value;
+                ViewModel.Owner = value;
+            }
         }
 
-        public WelcomePage()
+        public SettingsViewModel ViewModel => this.DataContext as SettingsViewModel;
+
+        public SettingsPage()
         {
             InitializeComponent();
         }
 
-        public WelcomePage(ApplicationViewModel owner) : this()
+        public SettingsPage(ApplicationViewModel owner) : this()
         {
             this.Owner = owner;
         }
 
-        private void btnContinueAnonymous_Click(object sender, RoutedEventArgs e)
+        private void btnGoBack_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
-        {
-            owner.GoLogin();
+            Owner.GoBack();
         }
     }
 }

@@ -36,5 +36,7 @@ namespace PicoShelter_DesktopApp
         void mainExit_Click(object sender, RoutedEventArgs e) => this.Close();
 
         void mainMinimize_Click(object sender, RoutedEventArgs e) => this.WindowState = WindowState.Minimized;
+
+        private void mainSettings_Click(object sender, RoutedEventArgs e) => ViewModel.GoSettings();
     }
 }

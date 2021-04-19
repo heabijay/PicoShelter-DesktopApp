@@ -26,7 +26,11 @@ namespace PicoShelter_DesktopApp.Pages
         public ApplicationViewModel Owner
         {
             get => owner;
-            set => owner = value;
+            set
+            {
+                owner = value;
+                ViewModel.Owner = value;
+            }
         }
 
         public LoginViewModel ViewModel => this.DataContext as LoginViewModel;
@@ -40,13 +44,12 @@ namespace PicoShelter_DesktopApp.Pages
         public LoginPage(ApplicationViewModel owner) : this()
         {
             this.Owner = owner;
-            ViewModel.Owner = Owner;
         }
 
 
         private void btnGoBack_Click(object sender, RoutedEventArgs e)
         {
-            Owner.ToBack();
+            Owner.GoBack();
         }
 
         private void btnGoResetPassword_Click(object sender, RoutedEventArgs e)

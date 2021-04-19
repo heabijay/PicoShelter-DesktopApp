@@ -22,54 +22,7 @@ namespace PicoShelter_DesktopApp.ViewModels
     {
         public LoginViewModel()
         {
-            SignInCommand = new AsyncRelayCommand(
-                async () =>
-                {
-                    this.IsLoading = true;
-
-                    LoginResponseDto response;
-
-                    var isEmail = Regex.IsMatch(login, @"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$");
-                    if (isEmail)
-                    {
-                        response = await HttpService.Current.LoginByEmailAsync(login, new System.Net.NetworkCredential(string.Empty, SecurePassword).Password);
-                    }
-                    else
-                    {
-                        response = await HttpService.Current.LoginAsync(login, new System.Net.NetworkCredential(string.Empty, SecurePassword).Password);
-                    }
-
-                    var settings = await AppSettingsProvider.ProvideAsync();
-                    settings.AccessToken = response.access_token;
-
-                    MessageBox.Show(settings.AccessToken);
-
-                    this.IsLoading = false;
-                },
-                t =>
-                {
-                    this.IsLoading = false;
-
-                    var ex = t as HttpResponseException;
-                    if (ex != null)
-                    {
-                        if (ex.Details?.type != null)
-                        {
-                            var exType = Enum.Parse<ExceptionType>(ex.Details.type);
-
-                            switch (exType)
-                            {
-                                case ExceptionType.CREDENTIALS_INCORRECT:
-                                    InvalidCredentialsWarn = true;
-                                    return;
-                            }
-                        }
-                    }
-
-                    MessageBox.Show("Something went wrong :(");
-                },
-                () => !string.IsNullOrWhiteSpace(Login) && SecurePassword?.Length > 0
-                );
+            SignInCommand = new AsyncRelayCommand(SignInCallback, SignInException, () => !string.IsNullOrWhiteSpace(Login) && SecurePassword?.Length > 0 );
         }
 
         public LoginViewModel(ApplicationViewModel owner) : this()
@@ -134,5 +87,54 @@ namespace PicoShelter_DesktopApp.ViewModels
         }
 
         public ICommand SignInCommand { get; init; }
+
+        private async Task SignInCallback()
+        {
+            this.IsLoading = true;
+
+            LoginResponseDto response;
+
+            var isEmail = Regex.IsMatch(login, @"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$");
+            if (isEmail)
+            {
+                response = await HttpService.Current.LoginByEmailAsync(login, new System.Net.NetworkCredential(string.Empty, SecurePassword).Password);
+            }
+            else
+            {
+                response = await HttpService.Current.LoginAsync(login, new System.Net.NetworkCredential(string.Empty, SecurePassword).Password);
+            }
+
+            this.IsLoading = false;
+
+            var settings = await AppSettingsProvider.ProvideAsync();
+            settings.AccessToken = response.access_token;
+
+            Owner.CurrentUser = response.user;
+        }
+
+        private void SignInException(Exception e)
+        {
+            {
+                this.IsLoading = false;
+
+                var ex = e as HttpResponseException;
+                if (ex != null)
+                {
+                    if (ex.Details?.type != null)
+                    {
+                        var exType = Enum.Parse<ExceptionType>(ex.Details.type);
+
+                        switch (exType)
+                        {
+                            case ExceptionType.CREDENTIALS_INCORRECT:
+                                InvalidCredentialsWarn = true;
+                                return;
+                        }
+                    }
+                }
+
+                MessageBox.Show("Something went wrong: " + ex.Message);
+            }
+        }
     }
 }

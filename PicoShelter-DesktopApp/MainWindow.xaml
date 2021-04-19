@@ -76,7 +76,7 @@
                 <svgc:SvgViewbox UriSource="/Resources/Icons/White Icon + Text.svg" Margin="2"/>
             </StackPanel>
 
-            <Button x:Name="mainSettings" Grid.Column="1">⚙</Button>
+            <Button x:Name="mainSettings" Click="mainSettings_Click" Grid.Column="1">⚙</Button>
             <Button x:Name="mainMinimize" Click="mainMinimize_Click" Grid.Column="2">_</Button>
             <Button x:Name="mainExit" Click="mainExit_Click" Grid.Column="3" Content="X">
                 <Button.Style>
@@ -91,9 +91,9 @@
             </Button>
         </Grid>
         <Frame Grid.Row="1"
-               Margin="30 15"
+               Margin="15"
                NavigationUIVisibility="Hidden"
                x:Name="navFrame"
-               Content="{Binding CurrentPage}" Grid.ColumnSpan="2"></Frame>
+               Content="{Binding CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"></Frame>
     </Grid>
 </Window>
