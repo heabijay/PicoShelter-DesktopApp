@@ -8,7 +8,7 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChanged([CallerMemberName] string prop = "") => PropertyChanged?.Invoke(this, new(prop));
+        public void OnPropertyChanged([CallerMemberName] string prop = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 
         private string accessToken;
         public string AccessToken

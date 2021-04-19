@@ -13,7 +13,7 @@ namespace PicoShelter_DesktopApp.Services
 {
     public class HttpService : IHttpService
     {
-        private readonly HttpClient httpClient = new();
+        private readonly HttpClient httpClient = new HttpClient();
 
         public string AccessToken
         {
@@ -31,7 +31,7 @@ namespace PicoShelter_DesktopApp.Services
             AccessToken = accessToken;
         }
 
-        private static readonly HttpService instance = new();
+        private static readonly HttpService instance = new HttpService();
         public static HttpService Current => instance;
         
         public async Task<LoginResponseDto> LoginAsync(string username, string password)

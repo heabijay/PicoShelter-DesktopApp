@@ -8,8 +8,8 @@ namespace PicoShelter_DesktopApp.DTOs
 {
     public class ErrorDetailsDto
     {
-        public string type { get; init; }
-        public string message { get; init; }
-        public object data { get; init; }
+        public string type { get; private set; }
+        public string message { get; private set; }
+        public object data { get; private set; }
     }
 }

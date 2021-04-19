@@ -99,7 +99,7 @@ namespace PicoShelter_DesktopApp
 
         public void GoSettings()
         {
-            if (CurrentPage is not SettingsPage)
+            if (!(CurrentPage is SettingsPage))
                 CurrentPage = new SettingsPage(this);
         }
     }
