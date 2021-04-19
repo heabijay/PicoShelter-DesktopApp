@@ -59,6 +59,30 @@
 
                     <Separator Margin="10 0"></Separator>
 
+                    <StackPanel Margin="10">
+                        <Grid Margin="0 0 0 10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16">System Integrations:</TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="1">App is running as portable version.</TextBlock>
+                            <Button Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" Padding="10 5" Command="{Binding InstallCommand}">Install</Button>
+                        </Grid>
+
+                        <StackPanel IsEnabled="false">
+                            <CheckBox>Integrate to Context Menu</CheckBox>
+                            <CheckBox>Integrate to Windows Start Menu</CheckBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Separator Margin="10 0"></Separator>
+
                     <WrapPanel Orientation="Horizontal" ScrollViewer.CanContentScroll="True">
                         <WrapPanel.Resources>
                             <Style x:Key="stackBlock" TargetType="StackPanel">
@@ -72,11 +96,6 @@
                         <StackPanel Style="{StaticResource stackBlock}">
                             <TextBlock FontSize="16" Margin="0 0 0 3">Misc</TextBlock>
                             <CheckBox>Open file after export</CheckBox>
-                        </StackPanel>
-                        <StackPanel Style="{StaticResource stackBlock}">
-                            <TextBlock FontSize="16" Margin="0 0 0 3">Integration</TextBlock>
-                            <CheckBox>Integrate to Context Menu</CheckBox>
-                            <CheckBox>Integrate to Windows Start Menu</CheckBox>
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>

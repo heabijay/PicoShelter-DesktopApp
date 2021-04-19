@@ -86,7 +86,7 @@ namespace PicoShelter_DesktopApp.ViewModels
             }
         }
 
-        public readonly ICommand SignInCommand;
+        public ICommand SignInCommand { get; private set; }
 
         private async Task SignInCallback()
         {
