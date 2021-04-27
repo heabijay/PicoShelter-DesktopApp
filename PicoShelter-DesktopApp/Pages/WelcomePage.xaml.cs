@@ -39,12 +39,12 @@ namespace PicoShelter_DesktopApp.Pages
 
         private void btnContinueAnonymous_Click(object sender, RoutedEventArgs e)
         {
-
+            Owner.GoMain();
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            owner.GoLogin();
+            Owner.GoLogin();
         }
     }
 }

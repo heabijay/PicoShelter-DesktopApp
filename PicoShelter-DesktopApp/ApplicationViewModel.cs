@@ -17,7 +17,10 @@ namespace PicoShelter_DesktopApp
     {
         public ApplicationViewModel()
         {
+            mainPage = new MainPage(this);
             currentPage = new WelcomePage(this);
+
+            currentPage = mainPage;
         }
 
         public ApplicationViewModel(MainWindow owner) : this()
@@ -35,6 +38,8 @@ namespace PicoShelter_DesktopApp
                 OnPropertyChanged();
             }
         }
+
+        private Page mainPage { get; set; }
 
         private Page currentPage { get; set; }
         public Page CurrentPage
@@ -94,7 +99,13 @@ namespace PicoShelter_DesktopApp
 
         public void GoLogin()
         {
-            CurrentPage = new LoginPage(this);
+            if (!(CurrentPage is LoginPage))
+                CurrentPage = new LoginPage(this);
+        }
+
+        public void GoMain()
+        {
+            CurrentPage = mainPage;
         }
 
         public void GoSettings()

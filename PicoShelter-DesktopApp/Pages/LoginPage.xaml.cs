@@ -54,7 +54,7 @@ namespace PicoShelter_DesktopApp.Pages
 
         private void btnGoResetPassword_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {ServerRouting.WebAppRouting.ResetPasswordUrl}") { CreateNoWindow = true });
+            Statics.WindowsLaunchManager.OpenUrlInBrowser(ServerRouting.WebAppRouting.ResetPasswordUrl);
         }
 
         private void tbPassword_PasswordChanged(object sender, RoutedEventArgs e)

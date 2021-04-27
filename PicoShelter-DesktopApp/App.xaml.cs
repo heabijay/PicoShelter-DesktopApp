@@ -13,5 +13,6 @@ namespace PicoShelter_DesktopApp
     /// </summary>
     public partial class App : Application
     {
+
     }
 }

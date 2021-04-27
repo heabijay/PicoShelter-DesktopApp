@@ -133,7 +133,7 @@ namespace PicoShelter_DesktopApp.ViewModels
                     }
                 }
 
-                MessageBox.Show("Something went wrong: " + ex.Message);
+                MessageBox.Show("Something went wrong: " + (ex?.Message ?? e?.Message));
             }
         }
     }
