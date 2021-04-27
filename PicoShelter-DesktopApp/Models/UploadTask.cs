@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PicoShelter_DesktopApp.DTOs;
+using PicoShelter_DesktopApp.Services.AppSettings.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -23,7 +25,18 @@ namespace PicoShelter_DesktopApp.Models
                 OnPropertyChanged();
 
                 Filename = Path.GetFileName(Filepath);
-                BitmapImage = new BitmapImage(new Uri(Filepath)) { DecodePixelWidth = 50 };
+
+                var bitmap = new BitmapImage();
+                var stream = File.OpenRead(Filepath);
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.DecodePixelWidth = 50;
+                bitmap.StreamSource = stream;
+                bitmap.EndInit();
+                stream.Close();
+                stream.Dispose();
+
+                BitmapImage = bitmap;
             }
         }
 
@@ -49,19 +62,51 @@ namespace PicoShelter_DesktopApp.Models
             }
         }
 
-        private string uploadedUrl { get; set; }
-        public string UploadedUrl
+        private QualityOptions uploadQuality { get; set; }
+        public QualityOptions UploadQuality
         {
-            get => uploadedUrl;
+            get => uploadQuality;
             set
             {
-                uploadedUrl = value;
+                uploadQuality = value;
                 OnPropertyChanged();
-                OnPropertyChanged("IsUploaded");
             }
         }
 
-        public bool IsUploaded => !string.IsNullOrEmpty(UploadedUrl);
+        private LifetimeOptions uploadLifetime { get; set; }
+        public LifetimeOptions UploadLifetime
+        {
+            get => uploadLifetime;
+            set
+            {
+                uploadLifetime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool makePublic { get ; set; }
+        public bool MakePublic
+        {
+            get => makePublic;
+            set
+            {
+                makePublic = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ImageInfoDto uploadInfo { get; set; }
+        public ImageInfoDto UploadInfo
+        {
+            get => uploadInfo;
+            set
+            {
+                uploadInfo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsUploaded => uploadInfo != null;
 
         private bool isUploading { get; set; }
         public bool IsUploading
@@ -86,9 +131,12 @@ namespace PicoShelter_DesktopApp.Models
         }
 
 
-        public UploadTask() { }
+        public UploadTask() 
+        {
 
-        public UploadTask(string filepath)
+        }
+
+        public UploadTask(string filepath) : this()
         {
             Filepath = filepath;
         }

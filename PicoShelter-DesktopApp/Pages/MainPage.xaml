@@ -4,7 +4,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:fa="http://schemas.fontawesome.io/icons/" 
-      xmlns:local="clr-namespace:PicoShelter_DesktopApp.Pages" xmlns:viewmodels="clr-namespace:PicoShelter_DesktopApp.ViewModels"
+      xmlns:System="clr-namespace:System;assembly=mscorlib"
+      xmlns:settingsEnums="clr-namespace:PicoShelter_DesktopApp.Services.AppSettings.Enums"
+      xmlns:local="clr-namespace:PicoShelter_DesktopApp.Pages" 
+      xmlns:viewmodels="clr-namespace:PicoShelter_DesktopApp.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="White"
@@ -21,19 +24,64 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBlock FontSize="16pt">
-            <Run>Tasks</Run>
-            <Run Text="{Binding UploadTasks.Count, Mode=OneWay, StringFormat=({0})}"></Run>
-        </TextBlock>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock FontSize="16pt">
+                <Run>Tasks</Run>
+                <Run Text="{Binding UploadTasks.Count, Mode=OneWay, StringFormat=({0})}"></Run>
+            </TextBlock>
+
+            <TextBlock Grid.Column="2" FontSize="10pt" VerticalAlignment="Bottom" FontStyle="Italic">
+                <TextBlock.Resources>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UploadTasks.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Resources>
+                <Hyperlink TextDecorations="None" Command="{Binding RemoveAllCommand}">Remove All</Hyperlink>
+            </TextBlock>
+        </Grid>
 
         <Grid Grid.Row="1" Margin="0 5">
             <Button Command="{Binding AddCommand}" AllowDrop="True" Panel.ZIndex="1" Background="White" BorderThickness="1" FontSize="48" FontWeight="Bold" Foreground="Gray">+</Button>
             <ListBox x:Name="TasksList"
+                     ScrollViewer.CanContentScroll="True"
+                     VirtualizingPanel.CacheLength="15"
+                     VirtualizingPanel.IsVirtualizing="True"
+                     VirtualizingPanel.CacheLengthUnit="Item"
                      VirtualizingPanel.ScrollUnit="Pixel"
                      Panel.ZIndex="{Binding UploadTasks.Count}" 
                      ItemsSource="{Binding UploadTasks}" 
                      HorizontalContentAlignment="Stretch"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.Resources>
+                    <Style x:Key="stackBlock" TargetType="StackPanel">
+                        <Setter Property="Margin" Value="0 5 10 0"></Setter>
+                    </Style>
+                    <ObjectDataProvider x:Key="defaultTitleOptions" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="settingsEnums:DefaultTitleOptions"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <ObjectDataProvider x:Key="defaultLifetimeOptions" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="settingsEnums:LifetimeOptions"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <ObjectDataProvider x:Key="defaultQualityOptions" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="settingsEnums:QualityOptions"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                </ListBox.Resources>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid x:Name="imageItem" MouseDown="imageItem_MouseDown">
@@ -44,40 +92,32 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid Height="50" Width="50">
+                                <fa:FontAwesome Icon="Spinner" Panel.ZIndex="10" FontSize="16pt" VerticalAlignment="Center" Spin="True" HorizontalAlignment="Center"></fa:FontAwesome>
                                 <Image Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding BitmapImage}"></Image>
                             </Grid>
                             <StackPanel Grid.Column="1" Margin="10 0 0 0">
                                 <TextBlock FontSize="14" Text="{Binding Filename}" TextWrapping="WrapWithOverflow"></TextBlock>
                                 <TextBlock Foreground="Gray" FontSize="10" Text="{Binding Filepath}" TextWrapping="WrapWithOverflow"></TextBlock>
                                 <!--<ProgressBar IsIndeterminate="True" Visibility="{Binding IsUploading}" Margin="0 5"></ProgressBar>-->
-                                <TextBlock Foreground="CadetBlue" FontSize="12" Visibility="{Binding IsUploaded}">
+                                <!--<TextBlock Foreground="CadetBlue" FontSize="12" Visibility="{Binding IsUploaded}">
                                     <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainPage}, Path=DataContext.OpenUrlCommand}" CommandParameter="{Binding}">
                                         <Run Text="{Binding Path=UploadedUrl}"></Run>
                                     </Hyperlink>
-                                </TextBlock>
+                                </TextBlock>-->
+                                <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="Margin" Value="0 0 5 0"></Setter>
+                                            <Setter Property="Height" Value="20"></Setter>
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <ComboBox MinWidth="100" SelectedItem="{Binding UploadQuality}" ItemsSource="{Binding Source={StaticResource defaultQualityOptions}}"></ComboBox>
+                                    <ComboBox MinWidth="100" SelectedItem="{Binding UploadLifetime}" ItemsSource="{Binding Source={StaticResource defaultLifetimeOptions}}"></ComboBox>
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding MakePublic, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Make image public</CheckBox>
+                                </StackPanel>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" Grid.Column="2" Margin="10 0 0 0">
-                                <Button CommandParameter="{Binding}" 
-                                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainPage}, Path=DataContext.CopyUrlCommand}"
-                                        Visibility="{Binding IsUploaded}"
-                                        BorderThickness="0" 
-                                        Cursor="Hand" 
-                                        Width="40"
-                                        Background="Transparent" 
-                                        Foreground="CadetBlue" 
-                                        Grid.Column="2"
-                                        FontSize="18">
-                                    <Grid>
-                                        <TextBlock>📋</TextBlock>
-                                        <Popup IsOpen="{Binding CopyPopupIsOpen}">
-                                            <TextBlock Background="LightGray" 
-                                                   Foreground="Black"
-                                                   Padding="5"
-                                                   FontSize="12">Copied</TextBlock>
-                                        </Popup>
-                                    </Grid>
-                                </Button>
                                 <Button CommandParameter="{Binding}" 
                                         Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainPage}, Path=DataContext.RemoveCommand}" 
                                         BorderThickness="0" 

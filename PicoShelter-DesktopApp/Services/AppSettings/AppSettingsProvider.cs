@@ -51,7 +51,15 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
                     var prop = appSettings.GetType().GetProperty(val);
                     if (prop != null)
                     {
-                        prop.SetValue(appSettings, Convert.ChangeType(registrySettings.GetValue(val), prop.PropertyType));
+                        if (prop.PropertyType.IsEnum)
+                        {
+                            if (Enum.TryParse(prop.PropertyType, registrySettings.GetValue(val)?.ToString(), out object result))
+                                prop.SetValue(appSettings, result);
+                        }
+                        else
+                        {
+                            prop.SetValue(appSettings, Convert.ChangeType(registrySettings.GetValue(val), prop.PropertyType));
+                        }
                     }
                 }
             }

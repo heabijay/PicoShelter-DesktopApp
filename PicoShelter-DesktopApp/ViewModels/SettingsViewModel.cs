@@ -1,4 +1,6 @@
 ﻿using PicoShelter_DesktopApp.Commands;
+using PicoShelter_DesktopApp.Pages;
+using PicoShelter_DesktopApp.Services.AppSettings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +17,8 @@ namespace PicoShelter_DesktopApp.ViewModels
         public SettingsViewModel()
         {
             InstallCommand = new RelayCommand<object>(InstallCallback);
+
+            settings = AppSettingsProvider.Provide();
         }
 
         public SettingsViewModel(ApplicationViewModel owner) : this()
@@ -34,6 +38,17 @@ namespace PicoShelter_DesktopApp.ViewModels
         }
 
         public ICommand InstallCommand { get; private set; }
+
+        private AppSettings settings { get; set; }
+        public AppSettings Settings
+        {
+            get => settings;
+            set
+            {
+                settings = value;
+                OnPropertyChanged();
+            }
+        }
 
         public static string SystemInstallPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "PicoShelter-DesktopApp.exe");
         public void InstallCallback(object param)

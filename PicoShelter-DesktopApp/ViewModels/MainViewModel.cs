@@ -1,6 +1,9 @@
 ﻿using Microsoft.Win32;
 using PicoShelter_DesktopApp.Commands;
 using PicoShelter_DesktopApp.Models;
+using PicoShelter_DesktopApp.Pages;
+using PicoShelter_DesktopApp.Services.AppSettings;
+using PicoShelter_DesktopApp.Services.AppSettings.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -26,14 +29,17 @@ namespace PicoShelter_DesktopApp.ViewModels
                     AddUploadTasks(dialog.FileNames);
             });
 
-            RemoveCommand = new RelayCommand(obj =>
+            RemoveCommand = new RelayCommand<UploadTask>(task =>
             {
-                if (obj is UploadTask task)
-                    UploadTasks.Remove(task);
-
+               UploadTasks.Remove(task);
             }, obj => !IsUploading);
 
-            uploadTasks.Add(new UploadTask(@"C:\Users\heabi\Downloads\Telegram Desktop\@iWallpaper (6).jpg"));
+            RemoveAllCommand = new RelayCommand(obj =>
+            {
+                UploadTasks.Clear();
+            }, obj => UploadTasks.Count > 0);
+
+            AddUploadTasks(@"C:\Users\heabi\Downloads\Telegram Desktop\@iWallpaper (6).jpg");
         }
 
         public MainViewModel(ApplicationViewModel owner) : this()
@@ -74,6 +80,16 @@ namespace PicoShelter_DesktopApp.ViewModels
             }
         }
 
+        public string GetDefaultTitle(string filepath)
+        {
+            return AppSettingsProvider.Provide().DefaultTitle switch
+            {
+                DefaultTitleOptions.SAME_AS_FILENAME => Path.GetFileName(filepath),
+                DefaultTitleOptions.EMPTY => "",
+                _ => null,
+            };
+        }
+
         public void AddUploadTasks(params string[] filepaths)
         {
             int unsupportedCount = 0;
@@ -84,7 +100,13 @@ namespace PicoShelter_DesktopApp.ViewModels
                     if (!ImageExtensions.Contains(Path.GetExtension(path).ToLower()))
                         throw new NotSupportedException();
 
-                    var task = new UploadTask(path);
+                    var task = new UploadTask(path)
+                    {
+                        UploadQuality = AppSettingsProvider.Provide().DefaultQuality,
+                        UploadLifetime = AppSettingsProvider.Provide().DefaultLifetime,
+                        MakePublic = AppSettingsProvider.Provide().DefaultMakePublic
+                    };
+
                     AddUploadTasks(task);
                 }
                 catch (NotSupportedException)
@@ -99,6 +121,7 @@ namespace PicoShelter_DesktopApp.ViewModels
 
         public ICommand AddCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
+        public ICommand RemoveAllCommand { get; private set; }
 
 
         private bool isUploading { get; set; }

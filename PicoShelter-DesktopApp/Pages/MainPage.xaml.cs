@@ -21,7 +21,6 @@ namespace PicoShelter_DesktopApp.Pages
     /// </summary>
     public partial class MainPage : Page
     {
-
         private ApplicationViewModel owner;
         public ApplicationViewModel Owner
         {
@@ -60,9 +59,8 @@ namespace PicoShelter_DesktopApp.Pages
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
             {
                 Grid grid = sender as Grid;
-                UploadTask image = grid.DataContext as UploadTask;
 
-                if (image != null)
+                if (grid.DataContext is UploadTask image)
                     Statics.WindowsLaunchManager.OpenFile(image.Filepath);
             }
         }

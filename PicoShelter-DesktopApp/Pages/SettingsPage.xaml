@@ -4,6 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:fa="http://schemas.fontawesome.io/icons/" 
+      xmlns:System="clr-namespace:System;assembly=mscorlib"
+      xmlns:settingsEnums="clr-namespace:PicoShelter_DesktopApp.Services.AppSettings.Enums"
       xmlns:local="clr-namespace:PicoShelter_DesktopApp.Pages" 
       xmlns:viewmodels="clr-namespace:PicoShelter_DesktopApp.ViewModels"
       mc:Ignorable="d" 
@@ -53,7 +55,7 @@
                             <Run FontWeight="Bold" Text="{Binding Owner.CurrentUserString, Mode=OneWay}"></Run>
                         </TextBlock>
                         <TextBlock Grid.Column="1" Grid.RowSpan="2" Margin="5" VerticalAlignment="Center">
-                            <Hyperlink TextDecorations="None">Logout</Hyperlink>
+                            <Hyperlink TextDecorations="None" Click="Hyperlink_Click">Logout</Hyperlink>
                         </TextBlock>
                     </Grid>
 
@@ -83,21 +85,44 @@
 
                     <Separator Margin="10 0"></Separator>
 
-                    <WrapPanel Orientation="Horizontal" ScrollViewer.CanContentScroll="True">
-                        <WrapPanel.Resources>
-                            <Style x:Key="stackBlock" TargetType="StackPanel">
-                                <Setter Property="Margin" Value="10"></Setter>
-                            </Style>
-                        </WrapPanel.Resources>
-                        <StackPanel Style="{StaticResource stackBlock}">
-                            <TextBlock FontSize="16" Margin="0 0 0 3">Upload</TextBlock>
-                            <CheckBox>AutoRetry on Cooldown</CheckBox>
-                        </StackPanel>
-                        <StackPanel Style="{StaticResource stackBlock}">
-                            <TextBlock FontSize="16" Margin="0 0 0 3">Misc</TextBlock>
-                            <CheckBox>Open file after export</CheckBox>
-                        </StackPanel>
-                    </WrapPanel>
+                    <StackPanel Margin="10">
+                        <TextBlock FontSize="16" Margin="0 0 0 3">Defaults:</TextBlock>
+                        <WrapPanel Orientation="Horizontal" ScrollViewer.CanContentScroll="True">
+                            <WrapPanel.Resources>
+                                <Style x:Key="stackBlock" TargetType="StackPanel">
+                                    <Setter Property="Margin" Value="0 5 10 0"></Setter>
+                                </Style>
+                                <ObjectDataProvider x:Key="defaultTitleOptions" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                                    <ObjectDataProvider.MethodParameters>
+                                        <x:Type TypeName="settingsEnums:DefaultTitleOptions"/>
+                                    </ObjectDataProvider.MethodParameters>
+                                </ObjectDataProvider>
+                                <ObjectDataProvider x:Key="defaultLifetimeOptions" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                                    <ObjectDataProvider.MethodParameters>
+                                        <x:Type TypeName="settingsEnums:LifetimeOptions"/>
+                                    </ObjectDataProvider.MethodParameters>
+                                </ObjectDataProvider>
+                                <ObjectDataProvider x:Key="defaultQualityOptions" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                                    <ObjectDataProvider.MethodParameters>
+                                        <x:Type TypeName="settingsEnums:QualityOptions"/>
+                                    </ObjectDataProvider.MethodParameters>
+                                </ObjectDataProvider>
+                            </WrapPanel.Resources>
+                            <StackPanel Style="{StaticResource stackBlock}">
+                                <TextBlock>Title:</TextBlock>
+                                <ComboBox MinWidth="100" SelectedItem="{Binding Settings.DefaultTitle}" ItemsSource="{Binding Source={StaticResource defaultTitleOptions}}"></ComboBox>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource stackBlock}">
+                                <TextBlock>Quality:</TextBlock>
+                                <ComboBox MinWidth="100" SelectedItem="{Binding Settings.DefaultQuality}" ItemsSource="{Binding Source={StaticResource defaultQualityOptions}}"></ComboBox>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource stackBlock}">
+                                <TextBlock>Lifetime:</TextBlock>
+                                <ComboBox MinWidth="100" SelectedItem="{Binding Settings.DefaultLifetime}" ItemsSource="{Binding Source={StaticResource defaultLifetimeOptions}}"></ComboBox>
+                            </StackPanel>
+                        </WrapPanel>
+                        <CheckBox Margin="0 10" IsChecked="{Binding Settings.DefaultMakePublic, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Make image public</CheckBox>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

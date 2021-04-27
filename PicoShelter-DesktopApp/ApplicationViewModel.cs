@@ -5,6 +5,7 @@ using PicoShelter_DesktopApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -18,28 +19,30 @@ namespace PicoShelter_DesktopApp
         public ApplicationViewModel()
         {
             mainPage = new MainPage(this);
-            currentPage = new WelcomePage(this);
+            settingsPage = new SettingsPage(this);
 
+            currentPage = new WelcomePage(this);
             currentPage = mainPage;
         }
 
         public ApplicationViewModel(MainWindow owner) : this()
         {
-            this.Owner = owner;
+            this.View = owner;
         }
 
-        private MainWindow owner { get; set; }
-        public MainWindow Owner
+        private MainWindow view { get; set; }
+        public MainWindow View
         {
-            get => owner;
+            get => view;
             set
             {
-                owner = value;
+                view = value;
                 OnPropertyChanged();
             }
         }
 
         private Page mainPage { get; set; }
+        private Page settingsPage { get; set; }
 
         private Page currentPage { get; set; }
         public Page CurrentPage
@@ -93,8 +96,8 @@ namespace PicoShelter_DesktopApp
 
         public void GoBack()
         {
-            if (Owner.navFrame.CanGoBack)
-                Owner.navFrame.NavigationService.GoBack();
+            if (View.navFrame.CanGoBack)
+                View.navFrame.NavigationService.GoBack();
         }
 
         public void GoLogin()
@@ -110,8 +113,7 @@ namespace PicoShelter_DesktopApp
 
         public void GoSettings()
         {
-            if (!(CurrentPage is SettingsPage))
-                CurrentPage = new SettingsPage(this);
+            CurrentPage = settingsPage;
         }
     }
 }

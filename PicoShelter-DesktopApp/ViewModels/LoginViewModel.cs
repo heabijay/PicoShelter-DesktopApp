@@ -2,6 +2,7 @@
 using PicoShelter_DesktopApp.DTOs;
 using PicoShelter_DesktopApp.Exceptions;
 using PicoShelter_DesktopApp.Infrastructure;
+using PicoShelter_DesktopApp.Pages;
 using PicoShelter_DesktopApp.Services;
 using PicoShelter_DesktopApp.Services.AppSettings;
 using System;
