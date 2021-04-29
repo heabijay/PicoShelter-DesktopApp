@@ -35,32 +35,39 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
             var values = registrySettings.GetValueNames();
             foreach (var val in values)
             {
-                if (val == nameof(appSettings.AccessToken))
+                try
                 {
-                    // appSettings.AccessToken
-                    var enToken = registrySettings.GetValue(nameof(appSettings.AccessToken))?.ToString();
-                    if (!string.IsNullOrWhiteSpace(enToken))
+                    if (val == nameof(appSettings.AccessToken))
                     {
-                        var enData = Convert.FromBase64String(enToken);
-                        var decData = ProtectedData.Unprotect(enData, null, DataProtectionScope.LocalMachine);
-                        appSettings.AccessToken = Encoding.Unicode.GetString(decData);
+                        // appSettings.AccessToken
+                        var enToken = registrySettings.GetValue(nameof(appSettings.AccessToken))?.ToString();
+                        if (!string.IsNullOrWhiteSpace(enToken))
+                        {
+                            var enData = Convert.FromBase64String(enToken);
+                            var decData = ProtectedData.Unprotect(enData, null, DataProtectionScope.LocalMachine);
+                            appSettings.AccessToken = Encoding.Unicode.GetString(decData);
+                        }
+                    }
+                    else
+                    {
+                        var prop = appSettings.GetType().GetProperty(val);
+                        if (prop != null)
+                        {
+                            if (prop.PropertyType.IsEnum)
+                            {
+                                if (Enum.TryParse(prop.PropertyType, registrySettings.GetValue(val)?.ToString(), out object result))
+                                    prop.SetValue(appSettings, result);
+                            }
+                            else
+                            {
+                                prop.SetValue(appSettings, Convert.ChangeType(registrySettings.GetValue(val), prop.PropertyType));
+                            }
+                        }
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    var prop = appSettings.GetType().GetProperty(val);
-                    if (prop != null)
-                    {
-                        if (prop.PropertyType.IsEnum)
-                        {
-                            if (Enum.TryParse(prop.PropertyType, registrySettings.GetValue(val)?.ToString(), out object result))
-                                prop.SetValue(appSettings, result);
-                        }
-                        else
-                        {
-                            prop.SetValue(appSettings, Convert.ChangeType(registrySettings.GetValue(val), prop.PropertyType));
-                        }
-                    }
+                    registrySettings.DeleteValue(val);
                 }
             }
         }

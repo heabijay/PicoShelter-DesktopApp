@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace PicoShelter_DesktopApp.ViewModels
@@ -16,7 +17,16 @@ namespace PicoShelter_DesktopApp.ViewModels
     {
         public SettingsViewModel()
         {
-            InstallCommand = new RelayCommand<object>(InstallCallback);
+            InstallCommand = new RelayCommand(InstallCallback);
+            LogoutCommand = new RelayCommand(obj =>
+            {
+                if (MessageBox.Show("Are you sure?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    AppSettingsProvider.Provide().AccessToken = null;
+                    Owner.CurrentUser = null;
+                    Owner.CurrentPage = new WelcomePage(Owner);
+                }
+            });
 
             settings = AppSettingsProvider.Provide();
         }
@@ -38,6 +48,7 @@ namespace PicoShelter_DesktopApp.ViewModels
         }
 
         public ICommand InstallCommand { get; private set; }
+        public ICommand LogoutCommand { get; private set; }
 
         private AppSettings settings { get; set; }
         public AppSettings Settings

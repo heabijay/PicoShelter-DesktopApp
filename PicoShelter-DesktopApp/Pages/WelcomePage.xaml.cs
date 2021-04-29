@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PicoShelter_DesktopApp.Services.AppSettings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,7 @@ namespace PicoShelter_DesktopApp.Pages
 
         private void btnContinueAnonymous_Click(object sender, RoutedEventArgs e)
         {
+            AppSettingsProvider.Provide().AccessToken = "";
             Owner.GoMain();
         }
 

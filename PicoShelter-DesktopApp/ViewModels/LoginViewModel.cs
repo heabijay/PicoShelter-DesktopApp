@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
@@ -24,6 +26,8 @@ namespace PicoShelter_DesktopApp.ViewModels
         public LoginViewModel()
         {
             SignInCommand = new AsyncRelayCommand(SignInCallback, SignInException, () => !string.IsNullOrWhiteSpace(Login) && SecurePassword?.Length > 0 );
+
+            SignInSessionCommand = new AsyncRelayCommand(SignInSessionCallback, SignInException);
         }
 
         public LoginViewModel(ApplicationViewModel owner) : this()
@@ -88,6 +92,7 @@ namespace PicoShelter_DesktopApp.ViewModels
         }
 
         public ICommand SignInCommand { get; private set; }
+        public ICommand SignInSessionCommand { get; private set; }
 
         private async Task SignInCallback()
         {
@@ -111,6 +116,19 @@ namespace PicoShelter_DesktopApp.ViewModels
             settings.AccessToken = response.access_token;
 
             Owner.CurrentUser = response.user;
+            Owner.GoMain();
+        }
+
+        private async Task SignInSessionCallback()
+        {
+            this.IsLoading = true;
+
+            AccountInfoDto response = await HttpService.Current.GetCurrentUserAsync();
+
+            this.IsLoading = false;
+
+            Owner.CurrentUser = response;
+            Owner.GoMain();
         }
 
         private void SignInException(Exception e)
@@ -118,8 +136,7 @@ namespace PicoShelter_DesktopApp.ViewModels
             {
                 this.IsLoading = false;
 
-                var ex = e as HttpResponseException;
-                if (ex != null)
+                if (e is HttpResponseException ex)
                 {
                     if (ex.Details?.type != null)
                     {
@@ -132,9 +149,20 @@ namespace PicoShelter_DesktopApp.ViewModels
                                 return;
                         }
                     }
+                    
+                    if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                        return;
+                }
+                else if (e?.InnerException is SocketException exSocket)
+                {
+                    if (exSocket.SocketErrorCode == SocketError.ConnectionRefused)
+                    {
+                        MessageBox.Show("Server is unavailable. Check your internet connection and try again. The app will shutdown.");
+                        App.Current.Shutdown();
+                    }
                 }
 
-                MessageBox.Show("Something went wrong: " + (ex?.Message ?? e?.Message));
+                MessageBox.Show("Something went wrong: " + e?.Message);
             }
         }
     }

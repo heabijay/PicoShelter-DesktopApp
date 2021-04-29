@@ -10,8 +10,10 @@ namespace PicoShelter_DesktopApp
     {
         public static class WebAppRouting
         {
-            public const string HomeUrl = "http://j66301z0.beget.tech";
+            //public const string HomeUrl = "http://j66301z0.beget.tech";
+            public const string HomeUrl = "https://localhost:4200";
             public const string ResetPasswordUrl = HomeUrl + "/login";
+            public const string ImageUrlEndpoint = HomeUrl + "/i/";
         }
 
         //public const string HomeUrl = "https://picoshelter-apiserver20210218164711.azurewebsites.net";
@@ -19,5 +21,7 @@ namespace PicoShelter_DesktopApp
         public const string LoginUrl = HomeUrl + "/api/Auth/login";
         public const string LoginByEmailUrl = HomeUrl + "/api/Auth/elogin";
         public const string GetCurrentUser = HomeUrl + "/api/Auth/getInfo";
+        public const string UploadUrl = HomeUrl + "/api/Upload";
+        public const string ImageUrlEndpoint = HomeUrl + "/i/";
     }
 }

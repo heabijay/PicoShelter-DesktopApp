@@ -1,6 +1,7 @@
 ﻿using PicoShelter_DesktopApp.DTOs;
 using PicoShelter_DesktopApp.Pages;
 using PicoShelter_DesktopApp.Services;
+using PicoShelter_DesktopApp.Services.AppSettings;
 using PicoShelter_DesktopApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,26 @@ namespace PicoShelter_DesktopApp
             mainPage = new MainPage(this);
             settingsPage = new SettingsPage(this);
 
-            currentPage = new WelcomePage(this);
-            currentPage = mainPage;
+            var token = AppSettingsProvider.Provide().AccessToken;
+            if (token != null)
+            {
+                if (token == "")
+                {
+                    CurrentPage = mainPage;
+                }
+                else
+                {
+                    HttpService.Current.AccessToken = token;
+
+                    var page = new LoginPage(this);
+                    page.ViewModel.SignInSessionCommand.Execute(null);
+                    CurrentPage = page;
+                }
+            }
+            else
+            {
+                CurrentPage = new WelcomePage(this);
+            }
         }
 
         public ApplicationViewModel(MainWindow owner) : this()
@@ -63,15 +82,18 @@ namespace PicoShelter_DesktopApp
             {
                 currentUser = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(IsCurrentUserAnonymous));
                 OnPropertyChanged(nameof(CurrentUserString));
             }
         }
+
+        public bool IsCurrentUserAnonymous => CurrentUser == null;
 
         public string CurrentUserString
         {
             get
             {
-                if (CurrentUser == null)
+                if (IsCurrentUserAnonymous)
                     return "Anonymous";
 
                 string r = "";
@@ -98,6 +120,8 @@ namespace PicoShelter_DesktopApp
         {
             if (View.navFrame.CanGoBack)
                 View.navFrame.NavigationService.GoBack();
+            else if (CurrentPage is LoginPage)
+                CurrentPage = new WelcomePage(this);
         }
 
         public void GoLogin()

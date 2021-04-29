@@ -55,7 +55,7 @@
                             <Run FontWeight="Bold" Text="{Binding Owner.CurrentUserString, Mode=OneWay}"></Run>
                         </TextBlock>
                         <TextBlock Grid.Column="1" Grid.RowSpan="2" Margin="5" VerticalAlignment="Center">
-                            <Hyperlink TextDecorations="None" Click="Hyperlink_Click">Logout</Hyperlink>
+                            <Hyperlink Command="{Binding LogoutCommand}" TextDecorations="None">Logout</Hyperlink>
                         </TextBlock>
                     </Grid>
 
@@ -114,14 +114,38 @@
                             </StackPanel>
                             <StackPanel Style="{StaticResource stackBlock}">
                                 <TextBlock>Quality:</TextBlock>
-                                <ComboBox MinWidth="100" SelectedItem="{Binding Settings.DefaultQuality}" ItemsSource="{Binding Source={StaticResource defaultQualityOptions}}"></ComboBox>
+                                <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultQualityOptions}}">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="Settings.DefaultQuality">
+                                            <Binding.ValidationRules>
+                                                <DataErrorValidationRule></DataErrorValidationRule>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
                             </StackPanel>
                             <StackPanel Style="{StaticResource stackBlock}">
                                 <TextBlock>Lifetime:</TextBlock>
-                                <ComboBox MinWidth="100" SelectedItem="{Binding Settings.DefaultLifetime}" ItemsSource="{Binding Source={StaticResource defaultLifetimeOptions}}"></ComboBox>
+                                <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultLifetimeOptions}}">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="Settings.DefaultLifetime">
+                                            <Binding.ValidationRules>
+                                                <DataErrorValidationRule></DataErrorValidationRule>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
                             </StackPanel>
                         </WrapPanel>
-                        <CheckBox Margin="0 10" IsChecked="{Binding Settings.DefaultMakePublic, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Make image public</CheckBox>
+                        <CheckBox Margin="0 10" Content="Make image public" HorizontalAlignment="Left">
+                            <CheckBox.IsChecked>
+                                <Binding Path="Settings.DefaultMakePublic" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                                    <Binding.ValidationRules>
+                                        <DataErrorValidationRule></DataErrorValidationRule>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </CheckBox.IsChecked>
+                        </CheckBox>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

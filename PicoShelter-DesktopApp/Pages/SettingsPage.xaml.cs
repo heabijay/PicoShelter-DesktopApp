@@ -48,10 +48,5 @@ namespace PicoShelter_DesktopApp.Pages
         {
             Owner.GoBack();
         }
-
-        private void Hyperlink_Click(object sender, RoutedEventArgs e)
-        {
-            Owner.GoLogin();
-        }
     }
 }
