@@ -43,7 +43,7 @@ namespace PicoShelter_DesktopApp.ViewModels
             RemoveAllCommand = new RelayCommand(obj =>
             {
                 UploadTasks.Clear();
-            }, obj => UploadTasks.Count > 0);
+            }, obj => !IsUploading && UploadTasks.Count > 0);
 
             UploadCommand = new AsyncRelayCommand(
                 UploadCallback, 
@@ -73,7 +73,25 @@ namespace PicoShelter_DesktopApp.ViewModels
                 t.CopyLinkPopupIsOpen = false;
             });
 
-            AddUploadTasks(@"C:\Users\heabi\Downloads\Telegram Desktop\@iWallpaper (6).jpg");
+            SetDefaultOptionsCommand = new RelayCommand(obj =>
+            {
+                int i = 0;
+                var settings = AppSettingsProvider.Provide();
+                while (i < UploadTasks.Count)
+                {
+                    var t = UploadTasks[i];
+                    if (!t.IsUploaded && !t.IsUploading)
+                    {
+                        t.MakePublic = settings.DefaultMakePublic;
+                        t.UploadQuality = settings.DefaultQuality;
+                        t.UploadLifetime = settings.DefaultLifetime;
+                    }
+
+                    i++;
+                }
+            }, obj => UploadTasks.Any(t => !t.IsUploaded && !t.IsUploading));
+
+            // AddUploadTasks(@"C:\Users\heabi\Downloads\Telegram Desktop\@iWallpaper (6).jpg");
         }
 
         public MainViewModel(ApplicationViewModel owner) : this()
@@ -167,6 +185,7 @@ namespace PicoShelter_DesktopApp.ViewModels
         public ICommand AddCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
         public ICommand RemoveAllCommand { get; private set; }
+        public ICommand SetDefaultOptionsCommand { get; private set; }
         public ICommand UploadCommand { get; private set; }
         public ICommand OpenLinkCommand { get; private set; }
         public ICommand CopyLinkCommand { get; private set; }
@@ -226,6 +245,7 @@ namespace PicoShelter_DesktopApp.ViewModels
             }
 
             IsUploading = false;
+            CommandManager.InvalidateRequerySuggested();
         }
 
         public void UploadException(Exception ex)

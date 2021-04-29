@@ -22,7 +22,7 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
             }
         }
 
-        private DefaultTitleOptions defaultTitle { get; set; } = DefaultTitleOptions.EMPTY;
+        private DefaultTitleOptions defaultTitle { get; set; } = DefaultTitleOptions.SAME_AS_FILENAME;
         public DefaultTitleOptions DefaultTitle
         {
             get => defaultTitle;
@@ -33,7 +33,7 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
             }
         }
 
-        private QualityOptions defaultQuality { get; set; } = QualityOptions.ORIGINAL;
+        private QualityOptions defaultQuality { get; set; } = QualityOptions.GOOD;
         public QualityOptions DefaultQuality
         {
             get => defaultQuality;
@@ -44,7 +44,7 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
             }
         }
 
-        private LifetimeOptions defaultLifetime { get; set; } = LifetimeOptions.LIFETIME;
+        private LifetimeOptions defaultLifetime { get; set; } = LifetimeOptions.HOUR_1;
         public LifetimeOptions DefaultLifetime
         {
             get => defaultLifetime;

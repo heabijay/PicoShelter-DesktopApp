@@ -1,4 +1,5 @@
 ﻿using PicoShelter_DesktopApp.DTOs;
+using PicoShelter_DesktopApp.Models;
 using PicoShelter_DesktopApp.Pages;
 using PicoShelter_DesktopApp.Services;
 using PicoShelter_DesktopApp.Services.AppSettings;
@@ -138,6 +139,24 @@ namespace PicoShelter_DesktopApp
         public void GoSettings()
         {
             CurrentPage = settingsPage;
+        }
+
+        public virtual void ConsoleArgsExecute(string[] args)
+        {
+            (mainPage as MainPage)?.ViewModel?.AddUploadTasks(args.Skip(1).ToArray());
+        }
+
+        public void PipeService_CommandReceived(PipeCommand command)
+        {
+            App.Current.MainWindow.Activate();
+
+            switch (command.Type)
+            {
+                case PipeCommand.CommandType.OpenSecondInstance:
+                    string[] args = command.CommandLineArgs;
+                    ConsoleArgsExecute(args);
+                    break;
+            }
         }
     }
 }

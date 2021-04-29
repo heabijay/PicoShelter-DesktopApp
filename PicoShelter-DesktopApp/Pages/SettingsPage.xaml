@@ -26,6 +26,7 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="15"></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <TextBlock VerticalAlignment="Center" Padding="5" Margin="0 0 10 0">
@@ -48,7 +49,7 @@
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
                         </Grid.RowDefinitions>
-                        
+
                         <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16">Account:</TextBlock>
                         <TextBlock  Grid.Column="0" Grid.Row="1">
                             <Run>You're logined in as </Run>
@@ -73,13 +74,77 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16">System Integrations:</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="1">App is running as portable version.</TextBlock>
-                            <Button Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" Padding="10 5" Command="{Binding InstallCommand}">Install</Button>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Foreground="Gray">
+                                <TextBlock.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsInstalled}" Value="false">
+                                                <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Resources>
+                                <Run>Version</Run>
+                                <Run Text="{Binding InstalledVersion, Mode=OneWay}"></Run>
+                                <Run>installed in</Run>
+                                <Run Text="{Binding SystemInstallPath, Mode=OneWay}"></Run>
+                            </TextBlock>
+                            <TextBlock Foreground="Gray" Grid.Column="0" Grid.Row="1" Text="App is running as portable version.">
+                                <TextBlock.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsInstalled}" Value="true">
+                                                <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Resources>
+                            </TextBlock>
+                            <Button Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" Padding="10 5" Command="{Binding InstallCommand}" IsEnabled="{Binding NeedUpdate}">
+                                <Grid>
+                                    <TextBlock Text="Install">
+                                        <TextBlock.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsInstalled}" Value="true">
+                                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Resources>
+                                    </TextBlock>
+                                    <TextBlock Text="Update">
+                                        <TextBlock.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding NeedUpdate}" Value="false">
+                                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsInstalled}" Value="false">
+                                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Resources>
+                                    </TextBlock>
+                                    <TextBlock Text="Installed">
+                                        <TextBlock.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding NeedUpdate}" Value="true">
+                                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Resources>
+                                    </TextBlock>
+                                </Grid>
+                            </Button>
                         </Grid>
 
-                        <StackPanel IsEnabled="false">
-                            <CheckBox>Integrate to Context Menu</CheckBox>
-                            <CheckBox>Integrate to Windows Start Menu</CheckBox>
+                        <StackPanel IsEnabled="{Binding IsInstalled}">
+                            <CheckBox IsChecked="{Binding IntegrateToContextMenu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Integrate to Context Menu</CheckBox>
+                            <CheckBox IsChecked="{Binding IntegrateToStartMenu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Integrate to Windows Start Menu</CheckBox>
                         </StackPanel>
                     </StackPanel>
 
@@ -150,5 +215,10 @@
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
+
+        <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" FontStyle="Italic" Foreground="Gray">
+            <Run>Running version: </Run>
+            <Run Text="{Binding ExecutingVersion, Mode=OneTime}"></Run>
+        </TextBlock>
     </Grid>
 </Page>

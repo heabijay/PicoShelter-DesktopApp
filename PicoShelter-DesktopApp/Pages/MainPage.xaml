@@ -46,6 +46,8 @@
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Resources>
+                <Hyperlink TextDecorations="None" Command="{Binding SetDefaultOptionsCommand}">Set default options</Hyperlink>
+                <Run>|</Run>
                 <Hyperlink TextDecorations="None" Command="{Binding RemoveAllCommand}">Remove All</Hyperlink>
             </TextBlock>
         </Grid>
@@ -256,8 +258,7 @@
 
             <StackPanel Grid.Column="2" Orientation="Horizontal">
                 <Button Command="{Binding AddCommand}">Add</Button>
-                <Button Command="{Binding UploadCommand}">Upload</Button>
-                <Button Margin="0">Cancel</Button>
+                <Button Margin="0" Command="{Binding UploadCommand}">Upload</Button>
             </StackPanel>
         </Grid>
 

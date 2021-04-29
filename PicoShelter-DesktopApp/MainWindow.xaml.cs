@@ -26,6 +26,11 @@ namespace PicoShelter_DesktopApp
         {
             InitializeComponent();
             ViewModel.View = this;
+
+            string[] args = Environment.GetCommandLineArgs();
+            ViewModel.ConsoleArgsExecute(args);
+
+            (App.Current as App).PipeService.CommandReceived += ViewModel.PipeService_CommandReceived;
         }
 
         void mainHeader_MouseDown(object sender, MouseButtonEventArgs e)
