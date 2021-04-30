@@ -35,7 +35,7 @@
              </Hyperlink>
         </TextBlock>
 
-        <TextBlock Grid.Column="1" FontSize="20pt">Settings</TextBlock>
+        <TextBlock Grid.Column="1" FontSize="20pt" Text="{DynamicResource SettingsPage.Header}"></TextBlock>
 
         <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
@@ -50,13 +50,17 @@
                             <RowDefinition Height="auto"></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16">Account:</TextBlock>
-                        <TextBlock  Grid.Column="0" Grid.Row="1">
-                            <Run>You're logined in as </Run>
+                        <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16">
+                            <Run Text="{DynamicResource SettingsPage.Account.Header}"></Run><Run>:</Run>
+                        </TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="1">
+                            <Run Text="{DynamicResource SettingsPage.Account.Subheader}"></Run>
                             <Run FontWeight="Bold" Text="{Binding Owner.CurrentUserString, Mode=OneWay}"></Run>
                         </TextBlock>
                         <TextBlock Grid.Column="1" Grid.RowSpan="2" Margin="5" VerticalAlignment="Center">
-                            <Hyperlink Command="{Binding LogoutCommand}" TextDecorations="None">Logout</Hyperlink>
+                            <Hyperlink Command="{Binding LogoutCommand}" TextDecorations="None">
+                                <Run Text="{DynamicResource SettingsPage.Account.Logout}"></Run>
+                            </Hyperlink>
                         </TextBlock>
                     </Grid>
 
@@ -73,7 +77,9 @@
                                 <RowDefinition Height="auto"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16">System Integrations:</TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16">
+                                <Run Text="{DynamicResource SettingsPage.Integrations.Header}"></Run><Run>:</Run>
+                            </TextBlock>
                             <TextBlock Grid.Column="0" Grid.Row="1" Foreground="Gray">
                                 <TextBlock.Resources>
                                     <Style TargetType="TextBlock">
@@ -84,9 +90,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </TextBlock.Resources>
-                                <Run>Version</Run>
+                                <Run Text="{DynamicResource SettingsPage.Integrations.Version}"></Run>
                                 <Run Text="{Binding InstalledVersion, Mode=OneWay}"></Run>
-                                <Run>installed in</Run>
+                                <Run Text="{DynamicResource SettingsPage.Integrations.InstalledIn}"></Run>
                                 <Run Text="{Binding SystemInstallPath, Mode=OneWay}"></Run>
                             </TextBlock>
                             <TextBlock Foreground="Gray" Grid.Column="0" Grid.Row="1" Text="App is running as portable version.">
@@ -102,7 +108,7 @@
                             </TextBlock>
                             <Button Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" Padding="10 5" Command="{Binding InstallCommand}" IsEnabled="{Binding NeedUpdate}">
                                 <Grid>
-                                    <TextBlock Text="Install">
+                                    <TextBlock Text="{DynamicResource SettingsPage.Integrations.Install}">
                                         <TextBlock.Resources>
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -113,7 +119,7 @@
                                             </Style>
                                         </TextBlock.Resources>
                                     </TextBlock>
-                                    <TextBlock Text="Update">
+                                    <TextBlock Text="{DynamicResource SettingsPage.Integrations.Update}">
                                         <TextBlock.Resources>
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -127,7 +133,7 @@
                                             </Style>
                                         </TextBlock.Resources>
                                     </TextBlock>
-                                    <TextBlock Text="Installed">
+                                    <TextBlock Text="{DynamicResource SettingsPage.Integrations.Installed}">
                                         <TextBlock.Resources>
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -143,15 +149,17 @@
                         </Grid>
 
                         <StackPanel IsEnabled="{Binding IsInstalled}">
-                            <CheckBox IsChecked="{Binding IntegrateToContextMenu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Integrate to Context Menu</CheckBox>
-                            <CheckBox IsChecked="{Binding IntegrateToStartMenu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Integrate to Windows Start Menu</CheckBox>
+                            <CheckBox IsChecked="{Binding IntegrateToContextMenu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{DynamicResource SettingsPage.Integrations.IntegrateToContextMenu}"></CheckBox>
+                            <CheckBox IsChecked="{Binding IntegrateToStartMenu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{DynamicResource SettingsPage.Integrations.IntegrateToWindowsStartMenu}"></CheckBox>
                         </StackPanel>
                     </StackPanel>
 
                     <Separator Margin="10 0"></Separator>
 
                     <StackPanel Margin="10">
-                        <TextBlock FontSize="16" Margin="0 0 0 3">Defaults:</TextBlock>
+                        <TextBlock FontSize="16" Margin="0 0 0 3">
+                            <Run Text="{DynamicResource SettingsPage.Defaults.Header}"></Run><Run>:</Run>
+                        </TextBlock>
                         <WrapPanel Orientation="Horizontal" ScrollViewer.CanContentScroll="True">
                             <WrapPanel.Resources>
                                 <Style x:Key="stackBlock" TargetType="StackPanel">
@@ -174,11 +182,15 @@
                                 </ObjectDataProvider>
                             </WrapPanel.Resources>
                             <StackPanel Style="{StaticResource stackBlock}">
-                                <TextBlock>Title:</TextBlock>
+                                <TextBlock>
+                                    <Run Text="{DynamicResource SettingsPage.Defaults.Title}"></Run><Run>:</Run>
+                                </TextBlock>
                                 <ComboBox MinWidth="100" SelectedItem="{Binding Settings.DefaultTitle}" ItemsSource="{Binding Source={StaticResource defaultTitleOptions}}"></ComboBox>
                             </StackPanel>
                             <StackPanel Style="{StaticResource stackBlock}">
-                                <TextBlock>Quality:</TextBlock>
+                                <TextBlock>
+                                    <Run Text="{DynamicResource SettingsPage.Defaults.Quality}"></Run><Run>:</Run>
+                                </TextBlock>
                                 <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultQualityOptions}}">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Settings.DefaultQuality">
@@ -190,7 +202,9 @@
                                 </ComboBox>
                             </StackPanel>
                             <StackPanel Style="{StaticResource stackBlock}">
-                                <TextBlock>Lifetime:</TextBlock>
+                                <TextBlock>
+                                    <Run Text="{DynamicResource SettingsPage.Defaults.Lifetime}"></Run><Run>:</Run>
+                                </TextBlock>
                                 <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultLifetimeOptions}}">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Settings.DefaultLifetime">
@@ -202,7 +216,7 @@
                                 </ComboBox>
                             </StackPanel>
                         </WrapPanel>
-                        <CheckBox Margin="0 10" Content="Make image public" HorizontalAlignment="Left">
+                        <CheckBox Margin="0 10" Content="{DynamicResource SettingsPage.Defaults.MakePublic}" HorizontalAlignment="Left">
                             <CheckBox.IsChecked>
                                 <Binding Path="Settings.DefaultMakePublic" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                     <Binding.ValidationRules>
@@ -212,13 +226,28 @@
                             </CheckBox.IsChecked>
                         </CheckBox>
                     </StackPanel>
+
+                    <Separator Margin="10 0"></Separator>
+
+                    <StackPanel Margin="10">
+                        <StackPanel.Resources>
+                            <ObjectDataProvider x:Key="localeOptions" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                                <ObjectDataProvider.MethodParameters>
+                                    <x:Type TypeName="settingsEnums:LocaleOptions"/>
+                                </ObjectDataProvider.MethodParameters>
+                            </ObjectDataProvider>
+                        </StackPanel.Resources>
+                        <TextBlock FontSize="16" Margin="0 0 0 3">
+                            <Run Text="{DynamicResource SettingsPage.Language.Header}"></Run><Run>:</Run>
+                        </TextBlock>
+                        <ComboBox Margin="0 5" MinWidth="100" HorizontalAlignment="Left" SelectedItem="{Binding Settings.Locale}" ItemsSource="{Binding Source={StaticResource localeOptions}}"></ComboBox>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
 
-        <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" FontStyle="Italic" Foreground="Gray">
-            <Run>Running version: </Run>
-            <Run Text="{Binding ExecutingVersion, Mode=OneTime}"></Run>
+        <TextBlock Margin="0 5 0 0" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" FontStyle="Italic" Foreground="Gray">
+            <Run Text="{Binding ExecutingVersion, Mode=OneTime, StringFormat=v{0}}"></Run>
         </TextBlock>
     </Grid>
 </Page>

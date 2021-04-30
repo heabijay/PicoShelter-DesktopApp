@@ -157,12 +157,12 @@ namespace PicoShelter_DesktopApp.ViewModels
                 {
                     if (exSocket.SocketErrorCode == SocketError.ConnectionRefused)
                     {
-                        MessageBox.Show("Server is unavailable. Check your internet connection and try again. The app will shutdown.");
+                        MessageBox.Show(ApplicationViewModel.LanguageResolve("LoginPage.ServerUnavailable").ToString());
                         App.Current.Shutdown();
                     }
                 }
 
-                MessageBox.Show("Something went wrong: " + e?.Message);
+                MessageBox.Show(ApplicationViewModel.LanguageResolve("Shared.SomethingWentWrong") + ": " + e?.Message);
             }
         }
     }

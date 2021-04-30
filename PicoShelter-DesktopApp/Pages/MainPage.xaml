@@ -32,7 +32,7 @@
             </Grid.ColumnDefinitions>
             
             <TextBlock FontSize="16pt">
-                <Run>Tasks</Run>
+                <Run Text="{DynamicResource MainPage.Header}"></Run>
                 <Run Text="{Binding UploadTasks.Count, Mode=OneWay, StringFormat=({0})}"></Run>
             </TextBlock>
 
@@ -46,9 +46,13 @@
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Resources>
-                <Hyperlink TextDecorations="None" Command="{Binding SetDefaultOptionsCommand}">Set default options</Hyperlink>
+                <Hyperlink TextDecorations="None" Command="{Binding SetDefaultOptionsCommand}">
+                    <Run Text="{DynamicResource MainPage.SetDefault}"></Run>
+                </Hyperlink>
                 <Run>|</Run>
-                <Hyperlink TextDecorations="None" Command="{Binding RemoveAllCommand}">Remove All</Hyperlink>
+                <Hyperlink TextDecorations="None" Command="{Binding RemoveAllCommand}">
+                    <Run Text="{DynamicResource MainPage.RemoveAll}"></Run>
+                </Hyperlink>
             </TextBlock>
         </Grid>
 
@@ -134,7 +138,7 @@
                                                 </Binding>
                                             </ComboBox.SelectedItem>
                                         </ComboBox>
-                                        <CheckBox VerticalAlignment="Center" Content="Make image public">
+                                        <CheckBox VerticalAlignment="Center" Content="{DynamicResource MainPage.Item.MakePublic}">
                                             <CheckBox.IsChecked>
                                                 <Binding Path="MakePublic"  UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                     <Binding.ValidationRules>
@@ -214,7 +218,8 @@
                                         <TextBlock Background="LightGray" 
                                                    Foreground="Black"
                                                    Padding="5"
-                                                   FontSize="12">Link copied!</TextBlock>
+                                                   Text="{DynamicResource MainPage.Item.LinkCopied}"
+                                                   FontSize="12"></TextBlock>
                                     </Popup>
                                 </Grid>
                             </StackPanel>
@@ -257,111 +262,9 @@
             </TextBlock>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Button Command="{Binding AddCommand}">Add</Button>
-                <Button Margin="0" Command="{Binding UploadCommand}">Upload</Button>
+                <Button Command="{Binding AddCommand}" Content="{DynamicResource MainPage.Add}"></Button>
+                <Button Margin="0" Command="{Binding UploadCommand}" Content="{DynamicResource MainPage.Upload}"></Button>
             </StackPanel>
         </Grid>
-
-        <!--<Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0" Margin="0 5 0 0">
-            <Button AllowDrop="True" Command="{Binding AddCommand}" Panel.ZIndex="1" Background="White" BorderThickness="1" FontSize="48" FontWeight="Bold" Foreground="Gray">+</Button>
-            <ListBox x:Name="TasksList"
-                     VirtualizingPanel.IsVirtualizing="True"
-                     VirtualizingPanel.ScrollUnit="Pixel"
-                     Panel.ZIndex="{Binding ImageTasks.Count}" 
-                     ItemsSource="{Binding ImageTasks}" 
-                     HorizontalContentAlignment="Stretch"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid x:Name="imageItem" MouseDown="imageItem_MouseDown">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="auto"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-
-                            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Height="50">
-                                <Image.Source>
-                                    <BitmapImage DecodePixelWidth="100" UriSource="{Binding FilePath}"></BitmapImage>
-                                </Image.Source>
-                            </Image>
-                            <StackPanel Grid.Column="1" Margin="10 0 0 0">
-                                <TextBlock FontSize="14" Text="{Binding FileName}" TextWrapping="WrapWithOverflow"></TextBlock>
-                                <TextBlock Foreground="Gray" FontSize="10" Text="{Binding FilePath}" TextWrapping="WrapWithOverflow"></TextBlock>
-                                <ProgressBar IsIndeterminate="True" Visibility="{Binding IsUploading, Converter={local1:VisibilityBoolValueConverter}}" Margin="0 5"></ProgressBar>
-                                <TextBlock Foreground="CadetBlue" FontSize="12" Visibility="{Binding IsUploaded, Converter={local1:VisibilityBoolValueConverter}}">
-                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TasksPage}, Path=DataContext.OpenUrlCommand}" CommandParameter="{Binding}">
-                                        <Run Text="{Binding Path=UploadedUrl}"></Run>
-                                    </Hyperlink>
-                                </TextBlock>
-                            </StackPanel>
-
-                            <StackPanel Orientation="Horizontal" Grid.Column="2" Margin="10 0 0 0">
-                                <Button CommandParameter="{Binding}" 
-                                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TasksPage}, Path=DataContext.CopyUrlCommand}"
-                                        Visibility="{Binding IsUploaded, Converter={local1:VisibilityBoolValueConverter}}"
-                                        BorderThickness="0" 
-                                        Cursor="Hand" 
-                                        Width="40"
-                                        Background="Transparent" 
-                                        Foreground="CadetBlue" 
-                                        Grid.Column="2"
-                                        FontSize="18">
-                                    <Grid>
-                                        <TextBlock>📋</TextBlock>
-                                        <Popup IsOpen="{Binding CopyPopupIsOpen}">
-                                            <TextBlock Background="LightGray" 
-                                                   Foreground="Black"
-                                                   Padding="5"
-                                                   FontSize="12">Copied</TextBlock>
-                                        </Popup>
-                                    </Grid>
-                                </Button>
-                                <Button CommandParameter="{Binding}" 
-                                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TasksPage}, Path=DataContext.RemoveCommand}" 
-                                        BorderThickness="0" 
-                                        Cursor="Hand"
-                                        Width="40"
-                                        Background="Transparent" 
-                                        Foreground="Red" 
-                                        Grid.Column="3"
-                                        FontSize="18">X</Button>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </Grid>
-
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Padding" Value="5"></Setter>
-                    <Setter Property="Margin" Value="0 5 5 0"></Setter>
-                    <Setter Property="MinWidth" Value="70"></Setter>
-                </Style>
-            </Grid.Resources>
-
-            <StackPanel Orientation="Horizontal" Grid.Column="0">
-                <Button Command="{Binding AddCommand}">Add</Button>
-                <Button Command="{Binding RemoveAllCommand}">Remove All</Button>
-                <Button Command="{Binding ExportAllCommand}">Export Links</Button>
-            </StackPanel>
-
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Button Command="{Binding UploadCommand}">Upload</Button>
-                <Button Command="{Binding StopUploadCommand}" Margin="0 5 0 0">Cancel</Button>
-            </StackPanel>
-        </Grid>-->
     </Grid>
 </Page>

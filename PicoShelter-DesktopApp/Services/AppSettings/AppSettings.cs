@@ -66,6 +66,17 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
             }
         }
 
+        private LocaleOptions locale { get; set; } = LocaleOptions.en_US;
+        public LocaleOptions Locale
+        {
+            get => locale;
+            set
+            {
+                locale = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string Error => throw new NotImplementedException();
 
         public string this[string columnName]

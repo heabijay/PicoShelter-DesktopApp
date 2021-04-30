@@ -176,10 +176,10 @@ namespace PicoShelter_DesktopApp.ViewModels
             }
 
             if (unsupportedCount > 0)
-                MessageBox.Show($"{unsupportedCount} files weren't added due to the unsupported type!");
+                MessageBox.Show($"{unsupportedCount} {ApplicationViewModel.LanguageResolve("MainPage.FilesWasntAddedDueUnsupported")}");
 
             if (sizeOverflowCount > 0)
-                MessageBox.Show($"{sizeOverflowCount} files weren't added due size was greater than 10 MB!");
+                MessageBox.Show($"{sizeOverflowCount} {ApplicationViewModel.LanguageResolve("MainPage.FilesWasntAddedDueSize")}");
         }
 
         public ICommand AddCommand { get; private set; }
@@ -218,19 +218,19 @@ namespace PicoShelter_DesktopApp.ViewModels
                     }
                     catch (HttpResponseException ex)
                     {
-                        MessageBox.Show("Something went wrong: " + ex.Message);
+                        MessageBox.Show($"{ApplicationViewModel.LanguageResolve("Shared.SomethingWentWrong")}: {ex.Message}");
                     }
                     catch (HttpRequestException ex) when (ex?.InnerException is SocketException exSocket)
                     {
                         if (exSocket.SocketErrorCode == SocketError.ConnectionRefused)
                         {
-                            MessageBox.Show("Server is unavailable. Check your internet connection and try again.");
+                            MessageBox.Show(ApplicationViewModel.LanguageResolve("MainPage.ServerUnavaliable").ToString());
                             break;
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Something went wrong while uploading {t.Filename} ({t.Filepath}): {ex.Message}");
+                        MessageBox.Show($"{ApplicationViewModel.LanguageResolve("Shared.SomethingWentWrong")} [{t.Filename} ({t.Filepath})]: {ex.Message}");
                     }
                     finally
                     {

@@ -3,15 +3,18 @@ using PicoShelter_DesktopApp.Models;
 using PicoShelter_DesktopApp.Pages;
 using PicoShelter_DesktopApp.Services;
 using PicoShelter_DesktopApp.Services.AppSettings;
+using PicoShelter_DesktopApp.Services.AppSettings.Enums;
 using PicoShelter_DesktopApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace PicoShelter_DesktopApp
@@ -20,19 +23,26 @@ namespace PicoShelter_DesktopApp
     {
         public ApplicationViewModel()
         {
+            var settings = AppSettingsProvider.Provide();
+            settings.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(settings.Locale))
+                    Language = settings.Locale;
+            };
+            Language = settings.Locale;
+
             mainPage = new MainPage(this);
             settingsPage = new SettingsPage(this);
 
-            var token = AppSettingsProvider.Provide().AccessToken;
-            if (token != null)
+            if (settings.AccessToken != null)
             {
-                if (token == "")
+                if (settings.AccessToken == "")
                 {
                     CurrentPage = mainPage;
                 }
                 else
                 {
-                    HttpService.Current.AccessToken = token;
+                    HttpService.Current.AccessToken = settings.AccessToken;
 
                     var page = new LoginPage(this);
                     page.ViewModel.SignInSessionCommand.Execute(null);
@@ -95,7 +105,7 @@ namespace PicoShelter_DesktopApp
             get
             {
                 if (IsCurrentUserAnonymous)
-                    return "Anonymous";
+                    return LanguageResolve("Shared.Anonymous").ToString();
 
                 string r = "";
 
@@ -157,6 +167,83 @@ namespace PicoShelter_DesktopApp
                     ConsoleArgsExecute(args);
                     break;
             }
+        }
+
+        public static event EventHandler LanguageChanged;
+
+        public static LocaleOptions Language
+        {
+            get
+            {
+                return Enum.Parse<LocaleOptions>(System.Threading.Thread.CurrentThread.CurrentUICulture.Name.Replace("-", "_"));
+            }
+            set
+            {
+                var localeName = value.ToString().Replace("_", "-");
+
+                if (localeName == System.Threading.Thread.CurrentThread.CurrentUICulture.Name) return;
+
+
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(localeName);
+
+                ResourceDictionary dict = new ResourceDictionary();
+                switch (localeName)
+                {
+                    case "en-US":
+                        dict.Source = new Uri("Resources/Locales/lang.xaml", UriKind.Relative);
+                        break;
+                    default:
+                        dict.Source = new Uri(String.Format("Resources/Locales/lang.{0}.xaml", localeName), UriKind.Relative);
+                        break;
+                }
+
+                LanguageDictionary = dict;
+
+                LanguageChanged?.Invoke(Application.Current, new EventArgs());
+            }
+        }
+
+        private static ResourceDictionary languageDictionary { get; set; }
+        private static ResourceDictionary LanguageDictionary
+        {
+            get
+            {
+                return languageDictionary ??= (from d in Application.Current.Resources.MergedDictionaries
+                                               where d.Source != null && d.Source.OriginalString.StartsWith("Resources/Locales/lang.")
+                                               select d).Skip(1).FirstOrDefault();
+            }
+            set
+            {
+                if (LanguageDictionary == value)
+                    return;
+
+                if (LanguageDictionary != null)
+                {
+                    int ind = Application.Current.Resources.MergedDictionaries.IndexOf(LanguageDictionary);
+                    Application.Current.Resources.MergedDictionaries.Remove(LanguageDictionary);
+                    Application.Current.Resources.MergedDictionaries.Insert(ind, value);
+                }
+                else
+                {
+                    Application.Current.Resources.MergedDictionaries.Add(value);
+                }
+
+                languageDictionary = value;
+            }
+        }
+
+        public static object LanguageResolve(string key)
+        {
+            var val = LanguageDictionary[key];
+
+            if (val != null)
+                return val;
+
+            val = (from d in Application.Current.Resources.MergedDictionaries
+                    where d.Source != null && d.Source.OriginalString.StartsWith("Resources/Locales/lang.")
+                    select d).LastOrDefault(t => t[key] != null)[key];
+
+            return val;
         }
     }
 }

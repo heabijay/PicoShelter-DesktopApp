@@ -22,7 +22,7 @@ namespace PicoShelter_DesktopApp.ViewModels
             InstallCommand = new RelayCommand(InstallCallback);
             LogoutCommand = new RelayCommand(obj =>
             {
-                if (MessageBox.Show("Are you sure?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show(ApplicationViewModel.LanguageResolve("Shared.AreYouSure").ToString(), "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     AppSettingsProvider.Provide().AccessToken = null;
                     Owner.CurrentUser = null;
@@ -192,7 +192,7 @@ namespace PicoShelter_DesktopApp.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Something went wrong: " + ex.Message);
+                MessageBox.Show(ApplicationViewModel.LanguageResolve("Shared.SomethingWentWrong").ToString() + ": " + ex.Message);
             }
             finally
             {

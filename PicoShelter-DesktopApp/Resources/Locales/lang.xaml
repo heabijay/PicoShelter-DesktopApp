@@ -1,0 +1,59 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <v:String x:Key="Shared.Anonymous">Anonymous</v:String>
+    <v:String x:Key="Shared.AreYouSure">Are you sure?</v:String>
+    <v:String x:Key="Shared.SomethingWentWrong">Something went wrong</v:String>
+
+    
+    <v:String x:Key="WelcomePage.Header">Welcome back!</v:String>
+    <v:String x:Key="WelcomePage.Subheader">Boost your work with</v:String>
+    <v:String x:Key="WelcomePage.SignIn">Sign in</v:String>
+    <v:String x:Key="WelcomePage.ContinueAsAnonymous">Continue as Anonymous</v:String>
+    
+    
+    <v:String x:Key="LoginPage.Header">Login</v:String>
+    <v:String x:Key="LoginPage.UsernameOrEmail">Username/Email</v:String>
+    <v:String x:Key="LoginPage.Password">Password</v:String>
+    <v:String x:Key="LoginPage.CredentialsIncorrect">Login or password is invalid!</v:String>
+    <v:String x:Key="LoginPage.SignIn">Sign in</v:String>
+    <v:String x:Key="LoginPage.ForgotPassword">Forgot password?</v:String>
+    <v:String x:Key="LoginPage.AuthorizationProcess">Authorization</v:String>
+    <v:String x:Key="LoginPage.ServerUnavailable">Server is unavailable. Check your internet connection and try again. The app will shutdown.</v:String>
+
+    
+    <v:String x:Key="SettingsPage.Header">Settings</v:String>
+    
+    <v:String x:Key="SettingsPage.Account.Header">Account</v:String>
+    <v:String x:Key="SettingsPage.Account.Subheader">You're logined in as</v:String>
+    <v:String x:Key="SettingsPage.Account.Logout">Logout</v:String>
+
+    <v:String x:Key="SettingsPage.Integrations.Header">System Integrations</v:String>
+    <v:String x:Key="SettingsPage.Integrations.Version">Version</v:String>
+    <v:String x:Key="SettingsPage.Integrations.InstalledIn">installed in</v:String>
+    <v:String x:Key="SettingsPage.Integrations.Install">Install</v:String>
+    <v:String x:Key="SettingsPage.Integrations.Update">Update</v:String>
+    <v:String x:Key="SettingsPage.Integrations.Installed">Installed</v:String>
+    <v:String x:Key="SettingsPage.Integrations.IntegrateToContextMenu">Integrate to Context Menu</v:String>
+    <v:String x:Key="SettingsPage.Integrations.IntegrateToWindowsStartMenu">Integrate to Windows Start Menu</v:String>
+    
+    <v:String x:Key="SettingsPage.Defaults.Header">Defaults</v:String>
+    <v:String x:Key="SettingsPage.Defaults.Title">Title</v:String>
+    <v:String x:Key="SettingsPage.Defaults.Quality">Quality</v:String>
+    <v:String x:Key="SettingsPage.Defaults.Lifetime">Lifetime</v:String>
+    <v:String x:Key="SettingsPage.Defaults.MakePublic">Make image public</v:String>
+    
+    <v:String x:Key="SettingsPage.Language.Header">Language</v:String>
+
+
+    <v:String x:Key="MainPage.Header">Tasks</v:String>
+    <v:String x:Key="MainPage.SetDefault">Set default options</v:String>
+    <v:String x:Key="MainPage.RemoveAll">Remove All</v:String>
+    <v:String x:Key="MainPage.Item.MakePublic">Make public</v:String>
+    <v:String x:Key="MainPage.Item.LinkCopied">Link Copied!</v:String>
+    <v:String x:Key="MainPage.Add">Add</v:String>
+    <v:String x:Key="MainPage.Upload">Upload</v:String>
+    <v:String x:Key="MainPage.FilesWasntAddedDueUnsupported">files weren't added due to the unsupported type!</v:String>
+    <v:String x:Key="MainPage.FilesWasntAddedDueSize">files weren't added due size was greater than 10 MB!</v:String>
+    <v:String x:Key="MainPage.ServerUnavaliable">"Server is unavailable. Check your internet connection and try again.</v:String>
+</ResourceDictionary>

@@ -1,0 +1,59 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <v:String x:Key="Shared.Anonymous">Анонім</v:String>
+    <v:String x:Key="Shared.AreYouSure">Ви впевнені?</v:String>
+    <v:String x:Key="Shared.SomethingWentWrong">Щось пішло не так</v:String>
+    
+    
+    <v:String x:Key="WelcomePage.Header">З поверненням!</v:String>
+    <v:String x:Key="WelcomePage.Subheader">Прискорте свою роботу з</v:String>
+    <v:String x:Key="WelcomePage.SignIn">Ввійти</v:String>
+    <v:String x:Key="WelcomePage.ContinueAsAnonymous">Продовжити анонімно</v:String>
+    
+    
+    <v:String x:Key="LoginPage.Header">Вхід</v:String>
+    <v:String x:Key="LoginPage.UsernameOrEmail">Ім'я користувача/Ел. пошта</v:String>
+    <v:String x:Key="LoginPage.Password">Пароль</v:String>
+    <v:String x:Key="LoginPage.CredentialsIncorrect">Логін або пароль не правильний!</v:String>
+    <v:String x:Key="LoginPage.SignIn">Увійти</v:String>
+    <v:String x:Key="LoginPage.ForgotPassword">Забули пароль?</v:String>
+    <v:String x:Key="LoginPage.AuthorizationProcess">Авторизація</v:String>
+    <v:String x:Key="LoginPage.ServerUnavailable">Сервер недоступний. Перевірте інтернет-з'єднання та спробуйте ще раз. Програма зараз закриється.</v:String>
+
+    
+    <v:String x:Key="SettingsPage.Header">Налаштування</v:String>
+
+    <v:String x:Key="SettingsPage.Account.Header">Обліковий запис</v:String>
+    <v:String x:Key="SettingsPage.Account.Subheader">Ви увійшли як</v:String>
+    <v:String x:Key="SettingsPage.Account.Logout">Вийти</v:String>
+
+    <v:String x:Key="SettingsPage.Integrations.Header">Інтеграції у систему</v:String>
+    <v:String x:Key="SettingsPage.Integrations.Version">Версія</v:String>
+    <v:String x:Key="SettingsPage.Integrations.InstalledIn">встановлена у</v:String>
+    <v:String x:Key="SettingsPage.Integrations.Install">Встановити</v:String>
+    <v:String x:Key="SettingsPage.Integrations.Update">Оновити</v:String>
+    <v:String x:Key="SettingsPage.Integrations.Installed">Встановлено</v:String>
+    <v:String x:Key="SettingsPage.Integrations.IntegrateToContextMenu">Додати в контексне меню</v:String>
+    <v:String x:Key="SettingsPage.Integrations.IntegrateToWindowsStartMenu">Додати до меню Пуск</v:String>
+
+    <v:String x:Key="SettingsPage.Defaults.Header">Параметри за замовчуванням</v:String>
+    <v:String x:Key="SettingsPage.Defaults.Title">Назва</v:String>
+    <v:String x:Key="SettingsPage.Defaults.Quality">Якість</v:String>
+    <v:String x:Key="SettingsPage.Defaults.Lifetime">Термін зберігання</v:String>
+    <v:String x:Key="SettingsPage.Defaults.MakePublic">Зробити зображення загальнодоступним</v:String>
+
+    <v:String x:Key="SettingsPage.Language.Header">Мова</v:String>
+
+
+    <v:String x:Key="MainPage.Header">Завдання</v:String>
+    <v:String x:Key="MainPage.SetDefault">Встановити за замовчуванням</v:String>
+    <v:String x:Key="MainPage.RemoveAll">Видалити всі</v:String>
+    <v:String x:Key="MainPage.Item.MakePublic">Загальнодоступне</v:String>
+    <v:String x:Key="MainPage.Item.LinkCopied">Посилання скопійоване!</v:String>
+    <v:String x:Key="MainPage.Add">Додати</v:String>
+    <v:String x:Key="MainPage.Upload">Завантажити</v:String>
+    <v:String x:Key="MainPage.FilesWasntAddedDueUnsupported">файлів не були додані, тому що тип не підтримується.</v:String>
+    <v:String x:Key="MainPage.FilesWasntAddedDueSize">файлів не були додані, тому що їх розмір більше 10 МБ.</v:String>
+    <v:String x:Key="MainPage.ServerUnavaliable">Сервер недоступний. Перевірте інтернет-з'єднання та спробуйте ще раз.</v:String>
+</ResourceDictionary>
