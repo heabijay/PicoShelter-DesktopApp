@@ -8,9 +8,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"></converters:InverseBooleanConverter>
+            <converters:EnumConverter x:Key="EnumConverter"></converters:EnumConverter>
             
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Locales/lang.xaml" />
+                <ResourceDictionary Source="Resources/Locales/lang.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -1,4 +1,5 @@
-﻿using PicoShelter_DesktopApp.DTOs;
+﻿using PicoShelter_DesktopApp.Converters;
+using PicoShelter_DesktopApp.DTOs;
 using PicoShelter_DesktopApp.Models;
 using PicoShelter_DesktopApp.Pages;
 using PicoShelter_DesktopApp.Services;
@@ -7,7 +8,6 @@ using PicoShelter_DesktopApp.Services.AppSettings.Enums;
 using PicoShelter_DesktopApp.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PicoShelter_DesktopApp
 {
@@ -27,7 +28,11 @@ namespace PicoShelter_DesktopApp
             settings.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(settings.Locale))
-                    Language = settings.Locale;
+                {
+                    //Language = settings.Locale;
+                    var msg = GetLanguageDictionary(settings.Locale)?["SettingsPage.Language.ChangeInfo"] ?? LanguageResolve("SettingsPage.Language.ChangeInfo");
+                    MessageBox.Show(msg.ToString());
+                }
             };
             Language = settings.Locale;
 
@@ -183,24 +188,30 @@ namespace PicoShelter_DesktopApp
 
                 if (localeName == System.Threading.Thread.CurrentThread.CurrentUICulture.Name) return;
 
-
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(localeName);
 
-                ResourceDictionary dict = new ResourceDictionary();
-                switch (localeName)
-                {
-                    case "en-US":
-                        dict.Source = new Uri("Resources/Locales/lang.xaml", UriKind.Relative);
-                        break;
-                    default:
-                        dict.Source = new Uri(String.Format("Resources/Locales/lang.{0}.xaml", localeName), UriKind.Relative);
-                        break;
-                }
-
-                LanguageDictionary = dict;
+                LanguageDictionary = GetLanguageDictionary(value);
 
                 LanguageChanged?.Invoke(Application.Current, new EventArgs());
             }
+        }
+
+        public static ResourceDictionary GetLanguageDictionary(LocaleOptions locale)
+        {
+            var localeName = locale.ToString().Replace("_", "-");
+
+            ResourceDictionary dict = new ResourceDictionary();
+            switch (localeName)
+            {
+                case "en-US":
+                    dict.Source = new Uri("Resources/Locales/lang.xaml", UriKind.Relative);
+                    break;
+                default:
+                    dict.Source = new Uri(String.Format("Resources/Locales/lang.{0}.xaml", localeName), UriKind.Relative);
+                    break;
+            }
+
+            return dict;
         }
 
         private static ResourceDictionary languageDictionary { get; set; }
@@ -208,9 +219,10 @@ namespace PicoShelter_DesktopApp
         {
             get
             {
-                return languageDictionary ??= (from d in Application.Current.Resources.MergedDictionaries
-                                               where d.Source != null && d.Source.OriginalString.StartsWith("Resources/Locales/lang.")
-                                               select d).Skip(1).FirstOrDefault();
+                return languageDictionary ??= Application.Current.Resources.MergedDictionaries
+                    .Where(d => d.Source != null && d.Source.OriginalString.StartsWith("Resources/Locales/lang."))
+                    .Skip(1)
+                    .FirstOrDefault();
             }
             set
             {
@@ -234,16 +246,20 @@ namespace PicoShelter_DesktopApp
 
         public static object LanguageResolve(string key)
         {
-            var val = LanguageDictionary[key];
+            object val;
+            if (LanguageDictionary != null)
+            {
+                val = LanguageDictionary[key];
 
-            if (val != null)
-                return val;
+                if (val != null)
+                    return val;
+            }
 
-            val = (from d in Application.Current.Resources.MergedDictionaries
-                    where d.Source != null && d.Source.OriginalString.StartsWith("Resources/Locales/lang.")
-                    select d).LastOrDefault(t => t[key] != null)[key];
+            val = Application.Current.Resources.MergedDictionaries
+                .Where(d => d.Source != null && d.Source.OriginalString.StartsWith("Resources/Locales/lang."))?
+                .LastOrDefault(t => t[key] != null)?[key];
 
-            return val;
+            return val ?? key;
         }
     }
 }

@@ -120,18 +120,18 @@
                                                 <Setter Property="Height" Value="20"></Setter>
                                             </Style>
                                         </StackPanel.Resources>
-                                        <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultQualityOptions}}">
+                                        <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultQualityOptions}, Converter={StaticResource EnumConverter}}">
                                             <ComboBox.SelectedItem>
-                                                <Binding Path="UploadQuality">
+                                                <Binding Path="UploadQuality" Converter="{StaticResource EnumConverter}">
                                                     <Binding.ValidationRules>
                                                         <DataErrorValidationRule></DataErrorValidationRule>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </ComboBox.SelectedItem>
                                         </ComboBox>
-                                        <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultLifetimeOptions}}">
+                                        <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultLifetimeOptions}, Converter={StaticResource EnumConverter}}">
                                             <ComboBox.SelectedItem>
-                                                <Binding Path="UploadLifetime">
+                                                <Binding Path="UploadLifetime" Converter="{StaticResource EnumConverter}">
                                                     <Binding.ValidationRules>
                                                         <DataErrorValidationRule></DataErrorValidationRule>
                                                     </Binding.ValidationRules>
