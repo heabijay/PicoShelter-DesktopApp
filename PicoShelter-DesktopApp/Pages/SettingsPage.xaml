@@ -185,15 +185,15 @@
                                 <TextBlock>
                                     <Run Text="{DynamicResource SettingsPage.Defaults.Title}"></Run><Run>:</Run>
                                 </TextBlock>
-                                <ComboBox MinWidth="100" SelectedItem="{Binding Settings.DefaultTitle}" ItemsSource="{Binding Source={StaticResource defaultTitleOptions}}"></ComboBox>
+                                <ComboBox MinWidth="100" SelectedItem="{Binding Settings.DefaultTitle, Converter={StaticResource EnumConverter}}" ItemsSource="{Binding Source={StaticResource defaultTitleOptions}, Converter={StaticResource EnumConverter}}"></ComboBox>
                             </StackPanel>
                             <StackPanel Style="{StaticResource stackBlock}">
                                 <TextBlock>
                                     <Run Text="{DynamicResource SettingsPage.Defaults.Quality}"></Run><Run>:</Run>
                                 </TextBlock>
-                                <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultQualityOptions}}">
+                                <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultQualityOptions}, Converter={StaticResource EnumConverter}}">
                                     <ComboBox.SelectedItem>
-                                        <Binding Path="Settings.DefaultQuality">
+                                        <Binding Path="Settings.DefaultQuality" Converter="{StaticResource EnumConverter}">
                                             <Binding.ValidationRules>
                                                 <DataErrorValidationRule></DataErrorValidationRule>
                                             </Binding.ValidationRules>
@@ -205,9 +205,9 @@
                                 <TextBlock>
                                     <Run Text="{DynamicResource SettingsPage.Defaults.Lifetime}"></Run><Run>:</Run>
                                 </TextBlock>
-                                <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultLifetimeOptions}}">
+                                <ComboBox MinWidth="100" ItemsSource="{Binding Source={StaticResource defaultLifetimeOptions}, Converter={StaticResource EnumConverter}}">
                                     <ComboBox.SelectedItem>
-                                        <Binding Path="Settings.DefaultLifetime">
+                                        <Binding Path="Settings.DefaultLifetime" Converter="{StaticResource EnumConverter}">
                                             <Binding.ValidationRules>
                                                 <DataErrorValidationRule></DataErrorValidationRule>
                                             </Binding.ValidationRules>
@@ -240,7 +240,7 @@
                         <TextBlock FontSize="16" Margin="0 0 0 3">
                             <Run Text="{DynamicResource SettingsPage.Language.Header}"></Run><Run>:</Run>
                         </TextBlock>
-                        <ComboBox Margin="0 5" MinWidth="100" HorizontalAlignment="Left" SelectedItem="{Binding Settings.Locale}" ItemsSource="{Binding Source={StaticResource localeOptions}}"></ComboBox>
+                        <ComboBox Margin="0 5" MinWidth="100" HorizontalAlignment="Left" SelectedItem="{Binding Settings.Locale, Converter={StaticResource EnumConverter}}" ItemsSource="{Binding Source={StaticResource localeOptions}, Converter={StaticResource EnumConverter}}"></ComboBox>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

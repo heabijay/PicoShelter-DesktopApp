@@ -4,8 +4,23 @@
     <v:String x:Key="Shared.Anonymous">Анонім</v:String>
     <v:String x:Key="Shared.AreYouSure">Ви впевнені?</v:String>
     <v:String x:Key="Shared.SomethingWentWrong">Щось пішло не так</v:String>
-    
-    
+
+
+    <v:String x:Key="Enum.DefaultTitleOptions.SAME_AS_FILENAME">Назва файлу</v:String>
+    <v:String x:Key="Enum.DefaultTitleOptions.EMPTY">Пуста</v:String>
+
+    <v:String x:Key="Enum.QualityOptions.MEDIUM">Середня якість</v:String>
+    <v:String x:Key="Enum.QualityOptions.GOOD">Хороша якість</v:String>
+    <v:String x:Key="Enum.QualityOptions.ORIGINAL">Оригінальна якість</v:String>
+
+    <v:String x:Key="Enum.LifetimeOptions.LIFETIME">Зберегти назавжди</v:String>
+    <v:String x:Key="Enum.LifetimeOptions.HOUR_1">Зберігати 1 годину</v:String>
+    <v:String x:Key="Enum.LifetimeOptions.HOUR_24">Зберігати 24 години</v:String>
+    <v:String x:Key="Enum.LifetimeOptions.WEEK">Зберігати тиждень</v:String>
+    <v:String x:Key="Enum.LifetimeOptions.MONTH">Зберігати місяць</v:String>
+
+
+
     <v:String x:Key="WelcomePage.Header">З поверненням!</v:String>
     <v:String x:Key="WelcomePage.Subheader">Прискорте свою роботу з</v:String>
     <v:String x:Key="WelcomePage.SignIn">Ввійти</v:String>
@@ -23,6 +38,7 @@
 
     
     <v:String x:Key="SettingsPage.Header">Налаштування</v:String>
+    <v:String x:Key="SettingsPage.Language.ChangeInfo">Мова буде змінена після перезавантаження програми!</v:String>
 
     <v:String x:Key="SettingsPage.Account.Header">Обліковий запис</v:String>
     <v:String x:Key="SettingsPage.Account.Subheader">Ви увійшли як</v:String>

@@ -5,7 +5,21 @@
     <v:String x:Key="Shared.AreYouSure">Are you sure?</v:String>
     <v:String x:Key="Shared.SomethingWentWrong">Something went wrong</v:String>
 
-    
+
+    <v:String x:Key="Enum.DefaultTitleOptions.SAME_AS_FILENAME">Same As Filename</v:String>
+    <v:String x:Key="Enum.DefaultTitleOptions.EMPTY">Empty</v:String>
+
+    <v:String x:Key="Enum.QualityOptions.MEDIUM">Medium quality</v:String>
+    <v:String x:Key="Enum.QualityOptions.GOOD">Good quality</v:String>
+    <v:String x:Key="Enum.QualityOptions.ORIGINAL">Original quality</v:String>
+
+    <v:String x:Key="Enum.LifetimeOptions.LIFETIME">Save for Forever</v:String>
+    <v:String x:Key="Enum.LifetimeOptions.HOUR_1">Save for 1 Hour</v:String>
+    <v:String x:Key="Enum.LifetimeOptions.HOUR_24">Save for 24 Hours</v:String>
+    <v:String x:Key="Enum.LifetimeOptions.WEEK">Save for Week</v:String>
+    <v:String x:Key="Enum.LifetimeOptions.MONTH">Save for Month</v:String>
+
+
     <v:String x:Key="WelcomePage.Header">Welcome back!</v:String>
     <v:String x:Key="WelcomePage.Subheader">Boost your work with</v:String>
     <v:String x:Key="WelcomePage.SignIn">Sign in</v:String>
@@ -44,6 +58,7 @@
     <v:String x:Key="SettingsPage.Defaults.MakePublic">Make image public</v:String>
     
     <v:String x:Key="SettingsPage.Language.Header">Language</v:String>
+    <v:String x:Key="SettingsPage.Language.ChangeInfo">Language will be change after application restart!</v:String>
 
 
     <v:String x:Key="MainPage.Header">Tasks</v:String>
