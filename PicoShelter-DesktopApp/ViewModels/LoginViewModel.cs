@@ -138,11 +138,9 @@ namespace PicoShelter_DesktopApp.ViewModels
 
                 if (e is HttpResponseException ex)
                 {
-                    if (ex.Details?.type != null)
+                    if (ex.Details?.type > ExceptionType.UNTYPED)
                     {
-                        var exType = Enum.Parse<ExceptionType>(ex.Details.type);
-
-                        switch (exType)
+                        switch (ex.Details.type)
                         {
                             case ExceptionType.CREDENTIALS_INCORRECT:
                                 InvalidCredentialsWarn = true;
