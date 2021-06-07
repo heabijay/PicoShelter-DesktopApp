@@ -3,26 +3,24 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Reflection;
-using System.Diagnostics;
 
 namespace PicoShelter_DesktopApp.Services.AppSettings
 {
     public static class AppSettingsProvider
     {
-        private static AppSettings appSettings;
-        private static RegistryKey registrySettings = Registry.LocalMachine.OpenSubKey("SOFTWARE", true).CreateSubKey("PicoShelterUploader", true);
+        private static AppSettings _appSettings;
+        private static RegistryKey _registrySettings = Registry.LocalMachine.OpenSubKey("SOFTWARE", true).CreateSubKey("PicoShelterUploader", true);
 
         public static AppSettings Provide()
         {
-            if (appSettings != null)
-                return appSettings;
+            if (_appSettings != null)
+                return _appSettings;
 
-            appSettings = new AppSettings();
-            ReadFromRegistry(appSettings);
-            appSettings.PropertyChanged += UpdateToRegistry;
+            _appSettings = new AppSettings();
+            ReadFromRegistry(_appSettings);
+            _appSettings.PropertyChanged += UpdateToRegistry;
 
-            return appSettings;
+            return _appSettings;
         }
 
         public static async Task<AppSettings> ProvideAsync()
@@ -32,7 +30,7 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
 
         private static void ReadFromRegistry(AppSettings appSettings)
         {
-            var values = registrySettings.GetValueNames();
+            var values = _registrySettings.GetValueNames();
             foreach (var val in values)
             {
                 try
@@ -40,7 +38,7 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
                     if (val == nameof(appSettings.AccessToken))
                     {
                         // appSettings.AccessToken
-                        var enToken = registrySettings.GetValue(nameof(appSettings.AccessToken))?.ToString();
+                        var enToken = _registrySettings.GetValue(nameof(appSettings.AccessToken))?.ToString();
                         if (!string.IsNullOrWhiteSpace(enToken))
                         {
                             var enData = Convert.FromBase64String(enToken);
@@ -55,19 +53,19 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
                         {
                             if (prop.PropertyType.IsEnum)
                             {
-                                if (Enum.TryParse(prop.PropertyType, registrySettings.GetValue(val)?.ToString(), out object result))
+                                if (Enum.TryParse(prop.PropertyType, _registrySettings.GetValue(val)?.ToString(), out object result))
                                     prop.SetValue(appSettings, result);
                             }
                             else
                             {
-                                prop.SetValue(appSettings, Convert.ChangeType(registrySettings.GetValue(val), prop.PropertyType));
+                                prop.SetValue(appSettings, Convert.ChangeType(_registrySettings.GetValue(val), prop.PropertyType));
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    registrySettings.DeleteValue(val);
+                    _registrySettings.DeleteValue(val);
                 }
             }
         }
@@ -84,18 +82,18 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
                 var enData = ProtectedData.Protect(bytes, null, DataProtectionScope.LocalMachine);
                 var data = Convert.ToBase64String(enData);
 
-                registrySettings.SetValue(e.PropertyName, data);
+                _registrySettings.SetValue(e.PropertyName, data);
             }
             else
             {
                 var val = settings.GetType().GetProperty(e.PropertyName)?.GetValue(settings, null);
                 if (val != null)
                 {
-                    registrySettings.SetValue(e.PropertyName, val.ToString());
+                    _registrySettings.SetValue(e.PropertyName, val.ToString());
                 }
                 else
                 {
-                    registrySettings.DeleteValue(e.PropertyName);
+                    _registrySettings.DeleteValue(e.PropertyName);
                 }
             }
         }
