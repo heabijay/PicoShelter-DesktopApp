@@ -1,11 +1,8 @@
 ﻿using PicoShelter_DesktopApp.DTOs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace PicoShelter_DesktopApp.Exceptions
 {
@@ -18,8 +15,8 @@ namespace PicoShelter_DesktopApp.Exceptions
         public List<ModelStateErrorDto> ModelStateErrors { get; set; }
 
         public HttpResponseException() { }
-        public HttpResponseException(HttpStatusCode? statusCode = null, ErrorDetailsDto details = null, List<ModelStateErrorDto> modelStateErrors = null) 
-            : base(BuildMessage(statusCode, details, modelStateErrors)) 
+        public HttpResponseException(HttpStatusCode? statusCode = null, ErrorDetailsDto details = null, List<ModelStateErrorDto> modelStateErrors = null)
+            : base(BuildMessage(statusCode, details, modelStateErrors))
         {
             StatusCode = statusCode;
             Details = details;

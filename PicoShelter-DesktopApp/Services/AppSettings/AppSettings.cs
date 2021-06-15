@@ -2,7 +2,6 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 
 namespace PicoShelter_DesktopApp.Services.AppSettings
 {
@@ -11,68 +10,68 @@ namespace PicoShelter_DesktopApp.Services.AppSettings
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 
-        private string accessToken;
+        private string _accessToken;
         public string AccessToken
         {
-            get => accessToken;
+            get => _accessToken;
             set
             {
-                accessToken = value;
+                _accessToken = value;
                 OnPropertyChanged();
             }
         }
 
-        private DefaultTitleOptions defaultTitle { get; set; } = DefaultTitleOptions.SAME_AS_FILENAME;
+        private DefaultTitleOptions _defaultTitle { get; set; } = DefaultTitleOptions.SAME_AS_FILENAME;
         public DefaultTitleOptions DefaultTitle
         {
-            get => defaultTitle;
+            get => _defaultTitle;
             set
             {
-                defaultTitle = value;
+                _defaultTitle = value;
                 OnPropertyChanged();
             }
         }
 
-        private QualityOptions defaultQuality { get; set; } = QualityOptions.GOOD;
+        private QualityOptions _defaultQuality { get; set; } = QualityOptions.GOOD;
         public QualityOptions DefaultQuality
         {
-            get => defaultQuality;
+            get => _defaultQuality;
             set
             {
-                defaultQuality = value;
+                _defaultQuality = value;
                 OnPropertyChanged();
             }
         }
 
-        private LifetimeOptions defaultLifetime { get; set; } = LifetimeOptions.HOUR_1;
+        private LifetimeOptions _defaultLifetime { get; set; } = LifetimeOptions.HOUR_1;
         public LifetimeOptions DefaultLifetime
         {
-            get => defaultLifetime;
+            get => _defaultLifetime;
             set
             {
-                defaultLifetime = value;
+                _defaultLifetime = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool defaultMakePublic { get; set; } = true;
+        private bool _defaultMakePublic { get; set; } = true;
         public bool DefaultMakePublic
         {
-            get => defaultMakePublic;
+            get => _defaultMakePublic;
             set
             {
-                defaultMakePublic = value;
+                _defaultMakePublic = value;
                 OnPropertyChanged();
             }
         }
 
-        private LocaleOptions locale { get; set; } = LocaleOptions.en_US;
+        private LocaleOptions _locale { get; set; } = LocaleOptions.en_US;
         public LocaleOptions Locale
         {
-            get => locale;
+            get => _locale;
             set
             {
-                locale = value;
+                _locale = value;
                 OnPropertyChanged();
             }
         }

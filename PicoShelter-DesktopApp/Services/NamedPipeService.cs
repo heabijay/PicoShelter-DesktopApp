@@ -1,9 +1,7 @@
 ﻿using PicoShelter_DesktopApp.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 
@@ -12,30 +10,31 @@ namespace PicoShelter_DesktopApp.Services
     public class NamedPipeService : IDisposable
     {
         public readonly string PipeName;
+        public event Action<PipeCommand> CommandReceived;
+
+        private CancellationTokenSource _CTS { get; set; }
+        private NamedPipeServerStream _serverStream { get; set; }
+
         public NamedPipeService(string pipeName)
         {
             PipeName = pipeName;
         }
-
-        public event Action<PipeCommand> CommandReceived;
-        private CancellationTokenSource CTS { get; set; }
-        private NamedPipeServerStream serverStream { get; set; }
         public async void StartServer()
         {
-            CTS = new CancellationTokenSource();
-            CTS.Token.Register(() => serverStream.Disconnect());
+            _CTS = new CancellationTokenSource();
+            _CTS.Token.Register(() => _serverStream.Disconnect());
 
 
             try
             {
-                while (!CTS.IsCancellationRequested)
+                while (!_CTS.IsCancellationRequested)
                 {
                     try
                     {
-                        serverStream = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
-                        await serverStream.WaitForConnectionAsync(CTS.Token);
+                        _serverStream = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+                        await _serverStream.WaitForConnectionAsync(_CTS.Token);
 
-                        using (StreamReader sr = new StreamReader(serverStream))
+                        using (StreamReader sr = new StreamReader(_serverStream))
                         {
                             string msg = await sr.ReadToEndAsync();
 
@@ -56,7 +55,7 @@ namespace PicoShelter_DesktopApp.Services
             }
             finally
             {
-                CTS.Cancel();
+                _CTS.Cancel();
             }
         }
 
@@ -83,13 +82,13 @@ namespace PicoShelter_DesktopApp.Services
 
         public void StopServer()
         {
-            CTS?.Cancel();
-            serverStream.Dispose();
+            _CTS?.Cancel();
+            _serverStream.Dispose();
         }
 
         public void Dispose()
         {
-            CTS?.Cancel();
+            _CTS?.Cancel();
         }
     }
 }

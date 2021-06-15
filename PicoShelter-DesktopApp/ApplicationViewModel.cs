@@ -1,5 +1,4 @@
-﻿using PicoShelter_DesktopApp.Converters;
-using PicoShelter_DesktopApp.DTOs;
+﻿using PicoShelter_DesktopApp.DTOs;
 using PicoShelter_DesktopApp.Models;
 using PicoShelter_DesktopApp.Pages;
 using PicoShelter_DesktopApp.Services;
@@ -7,16 +6,10 @@ using PicoShelter_DesktopApp.Services.AppSettings;
 using PicoShelter_DesktopApp.Services.AppSettings.Enums;
 using PicoShelter_DesktopApp.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace PicoShelter_DesktopApp
 {
@@ -36,14 +29,14 @@ namespace PicoShelter_DesktopApp
             };
             Language = settings.Locale;
 
-            mainPage = new MainPage(this);
-            settingsPage = new SettingsPage(this);
+            _mainPage = new MainPage(this);
+            _settingsPage = new SettingsPage(this);
 
             if (settings.AccessToken != null)
             {
                 if (settings.AccessToken == "")
                 {
-                    CurrentPage = mainPage;
+                    CurrentPage = _mainPage;
                 }
                 else
                 {
@@ -62,41 +55,41 @@ namespace PicoShelter_DesktopApp
 
         public ApplicationViewModel(MainWindow owner) : this()
         {
-            this.View = owner;
+            View = owner;
         }
 
-        private MainWindow view { get; set; }
+        private MainWindow _view { get; set; }
         public MainWindow View
         {
-            get => view;
+            get => _view;
             set
             {
-                view = value;
+                _view = value;
                 OnPropertyChanged();
             }
         }
 
-        private Page mainPage { get; set; }
-        private Page settingsPage { get; set; }
+        private Page _mainPage { get; set; }
+        private Page _settingsPage { get; set; }
 
-        private Page currentPage { get; set; }
+        private Page _currentPage { get; set; }
         public Page CurrentPage
         {
-            get => currentPage;
+            get => _currentPage;
             set
             {
-                currentPage = value;
+                _currentPage = value;
                 OnPropertyChanged();
             }
         }
 
-        private AccountInfoDto currentUser { get; set; }
+        private AccountInfoDto _currentUser { get; set; }
         public AccountInfoDto CurrentUser
         {
-            get => currentUser;
+            get => _currentUser;
             set
             {
-                currentUser = value;
+                _currentUser = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsCurrentUserAnonymous));
                 OnPropertyChanged(nameof(CurrentUserString));
@@ -148,17 +141,17 @@ namespace PicoShelter_DesktopApp
 
         public void GoMain()
         {
-            CurrentPage = mainPage;
+            CurrentPage = _mainPage;
         }
 
         public void GoSettings()
         {
-            CurrentPage = settingsPage;
+            CurrentPage = _settingsPage;
         }
 
         public virtual void ConsoleArgsExecute(string[] args)
         {
-            (mainPage as MainPage)?.ViewModel?.AddUploadTasks(args.Skip(1).ToArray());
+            (_mainPage as MainPage)?.ViewModel?.AddUploadTasks(args.Skip(1).ToArray());
         }
 
         public void PipeService_CommandReceived(PipeCommand command)
@@ -214,12 +207,12 @@ namespace PicoShelter_DesktopApp
             return dict;
         }
 
-        private static ResourceDictionary languageDictionary { get; set; }
+        private static ResourceDictionary _languageDictionary { get; set; }
         private static ResourceDictionary LanguageDictionary
         {
             get
             {
-                return languageDictionary ??= Application.Current.Resources.MergedDictionaries
+                return _languageDictionary ??= Application.Current.Resources.MergedDictionaries
                     .Where(d => d.Source != null && d.Source.OriginalString.StartsWith("Resources/Locales/lang."))
                     .Skip(1)
                     .FirstOrDefault();
@@ -240,7 +233,7 @@ namespace PicoShelter_DesktopApp
                     Application.Current.Resources.MergedDictionaries.Add(value);
                 }
 
-                languageDictionary = value;
+                _languageDictionary = value;
             }
         }
 

@@ -1,10 +1,7 @@
 ﻿using PicoShelter_DesktopApp.DTOs;
 using PicoShelter_DesktopApp.Exceptions;
 using PicoShelter_DesktopApp.Services.AppSettings;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -15,12 +12,15 @@ namespace PicoShelter_DesktopApp.Services
 {
     public class HttpService : IHttpService
     {
-        private readonly HttpClient httpClient = new HttpClient();
+        private readonly HttpClient _httpClient = new HttpClient();
+
+        private static readonly HttpService _instance = new HttpService();
+        public static HttpService Current => _instance;
 
         public string AccessToken
         {
-            get => httpClient.DefaultRequestHeaders.Authorization.Parameter;
-            set => httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", value);
+            get => _httpClient.DefaultRequestHeaders.Authorization.Parameter;
+            set => _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", value);
         }
 
         public HttpService()
@@ -37,15 +37,12 @@ namespace PicoShelter_DesktopApp.Services
             AccessToken = accessToken;
         }
 
-        private static readonly HttpService instance = new HttpService();
-        public static HttpService Current => instance;
-        
         public async Task<LoginResponseDto> LoginAsync(string username, string password)
         {
             var dto = new LoginRequestDto() { username = username, password = password };
             var sDto = JsonSerializer.Serialize(dto);
 
-            var result = await httpClient.PostAsync(ServerRouting.LoginUrl, new StringContent(sDto, Encoding.UTF8, "application/json"));
+            var result = await _httpClient.PostAsync(ServerRouting.LoginUrl, new StringContent(sDto, Encoding.UTF8, "application/json"));
 
             var resultStream = await result.Content.ReadAsStreamAsync();
             var response = await JsonSerializer.DeserializeAsync<HttpResponseDto<LoginResponseDto>>(resultStream);
@@ -63,7 +60,7 @@ namespace PicoShelter_DesktopApp.Services
             var dto = new LoginByEmailRequestDto() { email = email, password = password };
             var sDto = JsonSerializer.Serialize(dto);
 
-            var result = await httpClient.PostAsync(ServerRouting.LoginByEmailUrl, new StringContent(sDto, Encoding.UTF8, "application/json"));
+            var result = await _httpClient.PostAsync(ServerRouting.LoginByEmailUrl, new StringContent(sDto, Encoding.UTF8, "application/json"));
 
             var resultStream = await result.Content.ReadAsStreamAsync();
             var response = await JsonSerializer.DeserializeAsync<HttpResponseDto<LoginResponseDto>>(resultStream);
@@ -78,7 +75,7 @@ namespace PicoShelter_DesktopApp.Services
 
         public async Task<AccountInfoDto> GetCurrentUserAsync()
         {
-            var result = await httpClient.GetAsync(ServerRouting.GetCurrentUser);
+            var result = await _httpClient.GetAsync(ServerRouting.GetCurrentUser);
             if (result.IsSuccessStatusCode)
             {
                 var resultStream = await result.Content.ReadAsStreamAsync();
@@ -95,7 +92,7 @@ namespace PicoShelter_DesktopApp.Services
         {
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(string.IsNullOrWhiteSpace(title) ? "" : title), "title");
-            
+
             if (deleteInHours <= 0)
                 content.Add(new StringContent(""), "deleteInHours");
             else
@@ -105,7 +102,7 @@ namespace PicoShelter_DesktopApp.Services
             content.Add(new StringContent(quality.ToString()), "quality");
             content.Add(new StreamContent(filestream), "file", "image");
 
-            var result = await httpClient.PostAsync(ServerRouting.UploadUrl, content);
+            var result = await _httpClient.PostAsync(ServerRouting.UploadUrl, content);
             var resultStream = await result.Content.ReadAsStreamAsync();
             var response = await JsonSerializer.DeserializeAsync<HttpResponseDto<ImageInfoDto>>(resultStream);
 

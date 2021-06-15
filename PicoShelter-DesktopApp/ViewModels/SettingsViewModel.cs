@@ -3,13 +3,10 @@ using PicoShelter_DesktopApp.Commands;
 using PicoShelter_DesktopApp.Pages;
 using PicoShelter_DesktopApp.Services.AppSettings;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -30,21 +27,21 @@ namespace PicoShelter_DesktopApp.ViewModels
                 }
             });
 
-            settings = AppSettingsProvider.Provide();
+            _settings = AppSettingsProvider.Provide();
         }
 
         public SettingsViewModel(ApplicationViewModel owner) : this()
         {
-            this.Owner = owner;
+            Owner = owner;
         }
 
-        private ApplicationViewModel owner { get; set; }
+        private ApplicationViewModel _owner { get; set; }
         public ApplicationViewModel Owner
         {
-            get => owner;
+            get => _owner;
             set
             {
-                owner = value;
+                _owner = value;
                 OnPropertyChanged();
             }
         }
@@ -52,13 +49,13 @@ namespace PicoShelter_DesktopApp.ViewModels
         public ICommand InstallCommand { get; private set; }
         public ICommand LogoutCommand { get; private set; }
 
-        private AppSettings settings { get; set; }
+        private AppSettings _settings { get; set; }
         public AppSettings Settings
         {
-            get => settings;
+            get => _settings;
             set
             {
-                settings = value;
+                _settings = value;
                 OnPropertyChanged();
             }
         }

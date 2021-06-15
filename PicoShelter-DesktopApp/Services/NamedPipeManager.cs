@@ -1,9 +1,7 @@
 ﻿using PicoShelter_DesktopApp.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 
@@ -15,7 +13,7 @@ namespace PicoShelter_DesktopApp.Services
         public event Action<PipeCommand> ReceivedCommand;
 
         private bool _isRunning = false;
-        private Thread Thread;
+        private Thread _thread;
 
         public NamedPipeManager(string name)
         {
@@ -27,7 +25,7 @@ namespace PicoShelter_DesktopApp.Services
         /// </summary>
         public void StartServer()
         {
-            Thread = new Thread((pipeName) =>
+            _thread = new Thread((pipeName) =>
             {
                 _isRunning = true;
 
@@ -42,7 +40,7 @@ namespace PicoShelter_DesktopApp.Services
                         break;
                 }
             });
-            Thread.Start(NamedPipeName);
+            _thread.Start(NamedPipeName);
         }
 
         private void NamedPipeServerAsyncCallback(IAsyncResult ar)

@@ -1,11 +1,9 @@
 ﻿using PicoShelter_DesktopApp.DTOs;
 using PicoShelter_DesktopApp.Services.AppSettings.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Media.Imaging;
 
 namespace PicoShelter_DesktopApp.Models
@@ -15,13 +13,13 @@ namespace PicoShelter_DesktopApp.Models
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 
-        private string filepath { get; set; }
+        private string _filepath { get; set; }
         public string Filepath
         {
-            get => filepath;
+            get => _filepath;
             set
             {
-                filepath = value;
+                _filepath = value;
                 OnPropertyChanged();
 
                 Filename = Path.GetFileName(Filepath);
@@ -40,68 +38,68 @@ namespace PicoShelter_DesktopApp.Models
             }
         }
 
-        private string filename { get; set; }
+        private string _filename { get; set; }
         public string Filename
         {
-            get => filename;
+            get => _filename;
             private set
             {
-                filename = value;
+                _filename = value;
                 OnPropertyChanged();
             }
         }
 
-        private BitmapImage bitmapImage { get; set; }
+        private BitmapImage _bitmapImage { get; set; }
         public BitmapImage BitmapImage
         {
-            get => bitmapImage;
+            get => _bitmapImage;
             private set
             {
-                bitmapImage = value;
+                _bitmapImage = value;
                 OnPropertyChanged();
             }
         }
 
-        private QualityOptions uploadQuality { get; set; }
+        private QualityOptions _uploadQuality { get; set; }
         public QualityOptions UploadQuality
         {
-            get => uploadQuality;
+            get => _uploadQuality;
             set
             {
-                uploadQuality = value;
+                _uploadQuality = value;
                 OnPropertyChanged();
             }
         }
 
-        private LifetimeOptions uploadLifetime { get; set; }
+        private LifetimeOptions _uploadLifetime { get; set; }
         public LifetimeOptions UploadLifetime
         {
-            get => uploadLifetime;
+            get => _uploadLifetime;
             set
             {
-                uploadLifetime = value;
+                _uploadLifetime = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool makePublic { get ; set; }
+        private bool _makePublic { get; set; }
         public bool MakePublic
         {
-            get => makePublic;
+            get => _makePublic;
             set
             {
-                makePublic = value;
+                _makePublic = value;
                 OnPropertyChanged();
             }
         }
 
-        private ImageInfoDto uploadInfo { get; set; }
+        private ImageInfoDto _uploadInfo { get; set; }
         public ImageInfoDto UploadInfo
         {
-            get => uploadInfo;
+            get => _uploadInfo;
             set
             {
-                uploadInfo = value;
+                _uploadInfo = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsUploaded));
                 OnPropertyChanged(nameof(UploadUrl));
@@ -109,29 +107,29 @@ namespace PicoShelter_DesktopApp.Models
             }
         }
 
-        public string UploadUrl => ServerRouting.WebAppRouting.ImageUrlEndpoint + uploadInfo?.imageCode; 
-        public string UploadDirectUrl => ServerRouting.ImageUrlEndpoint + uploadInfo?.imageCode + '.' + UploadInfo?.imageType?.Replace("jpeg", "jpg"); 
+        public string UploadUrl => ServerRouting.WebAppRouting.ImageUrlEndpoint + _uploadInfo?.imageCode;
+        public string UploadDirectUrl => ServerRouting.ImageUrlEndpoint + _uploadInfo?.imageCode + '.' + UploadInfo?.imageType?.Replace("jpeg", "jpg");
 
-        public bool IsUploaded => uploadInfo != null;
+        public bool IsUploaded => _uploadInfo != null;
 
-        private bool isUploading { get; set; }
+        private bool _isUploading { get; set; }
         public bool IsUploading
         {
-            get => isUploading;
+            get => _isUploading;
             set
             {
-                isUploading = value;
+                _isUploading = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool copyLinkPopupIsOpen { get; set; }
+        private bool _copyLinkPopupIsOpen { get; set; }
         public bool CopyLinkPopupIsOpen
         {
-            get => copyLinkPopupIsOpen;
+            get => _copyLinkPopupIsOpen;
             set
             {
-                copyLinkPopupIsOpen = value;
+                _copyLinkPopupIsOpen = value;
                 OnPropertyChanged();
             }
         }
@@ -165,7 +163,7 @@ namespace PicoShelter_DesktopApp.Models
         }
 
 
-        public UploadTask() 
+        public UploadTask()
         {
 
         }

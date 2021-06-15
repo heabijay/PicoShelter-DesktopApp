@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Data;
 
 namespace PicoShelter_DesktopApp.Converters
@@ -8,8 +6,6 @@ namespace PicoShelter_DesktopApp.Converters
     [ValueConversion(typeof(bool), typeof(bool))]
     public class InverseBooleanConverter : IValueConverter
     {
-        #region IValueConverter Members
-
         public object Convert(object value, Type targetType, object parameter,
             System.Globalization.CultureInfo culture)
         {
@@ -24,7 +20,5 @@ namespace PicoShelter_DesktopApp.Converters
         {
             throw new NotSupportedException();
         }
-
-        #endregion
     }
 }

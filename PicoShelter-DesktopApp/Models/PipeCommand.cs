@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PicoShelter_DesktopApp.Models
+﻿namespace PicoShelter_DesktopApp.Models
 {
     public class PipeCommand
     {

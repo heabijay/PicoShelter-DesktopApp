@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -30,15 +27,15 @@ namespace PicoShelter_DesktopApp.Commands
 
         public event EventHandler CanExecuteChanged
         {
-            add 
+            add
             {
                 _internalCanExecuteChanged += value;
-                CommandManager.RequerySuggested += value; 
+                CommandManager.RequerySuggested += value;
             }
-            remove 
+            remove
             {
                 _internalCanExecuteChanged -= value;
-                CommandManager.RequerySuggested -= value; 
+                CommandManager.RequerySuggested -= value;
             }
         }
 

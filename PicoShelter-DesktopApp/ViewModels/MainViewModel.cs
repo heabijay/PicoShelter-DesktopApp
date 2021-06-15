@@ -2,7 +2,6 @@
 using PicoShelter_DesktopApp.Commands;
 using PicoShelter_DesktopApp.Exceptions;
 using PicoShelter_DesktopApp.Models;
-using PicoShelter_DesktopApp.Pages;
 using PicoShelter_DesktopApp.Services;
 using PicoShelter_DesktopApp.Services.AppSettings;
 using PicoShelter_DesktopApp.Services.AppSettings.Enums;
@@ -37,7 +36,7 @@ namespace PicoShelter_DesktopApp.ViewModels
 
             RemoveCommand = new RelayCommand<UploadTask>(task =>
             {
-               UploadTasks.Remove(task);
+                UploadTasks.Remove(task);
             }, obj => !IsUploading);
 
             RemoveAllCommand = new RelayCommand(obj =>
@@ -46,9 +45,9 @@ namespace PicoShelter_DesktopApp.ViewModels
             }, obj => !IsUploading && UploadTasks.Count > 0);
 
             UploadCommand = new AsyncRelayCommand(
-                UploadCallback, 
-                UploadException, 
-                () => !IsUploading && 
+                UploadCallback,
+                UploadException,
+                () => !IsUploading &&
                     UploadTasks.Any(t => !t.IsUploaded) &&
                     !UploadTasks.Any(t => !t.IsUploaded && (t[nameof(t.UploadQuality)] != null) || (t[nameof(t.MakePublic)] != null) || (t[nameof(t.UploadLifetime)] != null)));
 
@@ -96,29 +95,29 @@ namespace PicoShelter_DesktopApp.ViewModels
 
         public MainViewModel(ApplicationViewModel owner) : this()
         {
-            this.Owner = owner;
+            Owner = owner;
         }
 
-        private ApplicationViewModel owner { get; set; }
+        private ApplicationViewModel _owner { get; set; }
         public ApplicationViewModel Owner
         {
-            get => owner;
+            get => _owner;
             set
             {
-                owner = value;
+                _owner = value;
                 OnPropertyChanged();
             }
         }
 
         public static readonly string[] ImageExtensions = new string[] { ".bmp", ".gif", ".jpg", ".jpeg", ".png" };
 
-        private ObservableCollection<UploadTask> uploadTasks = new ObservableCollection<UploadTask>();
+        private ObservableCollection<UploadTask> _uploadTasks = new ObservableCollection<UploadTask>();
         public ObservableCollection<UploadTask> UploadTasks
         {
-            get => uploadTasks;
+            get => _uploadTasks;
             set
             {
-                uploadTasks = value;
+                _uploadTasks = value;
                 OnPropertyChanged();
             }
         }
@@ -254,13 +253,13 @@ namespace PicoShelter_DesktopApp.ViewModels
         }
 
 
-        private bool isUploading { get; set; }
+        private bool _isUploading { get; set; }
         public bool IsUploading
         {
-            get => isUploading;
+            get => _isUploading;
             set
             {
-                isUploading = value;
+                _isUploading = value;
                 OnPropertyChanged();
             }
         }

@@ -2,18 +2,11 @@
 using PicoShelter_DesktopApp.DTOs;
 using PicoShelter_DesktopApp.Exceptions;
 using PicoShelter_DesktopApp.Infrastructure;
-using PicoShelter_DesktopApp.Pages;
 using PicoShelter_DesktopApp.Services;
 using PicoShelter_DesktopApp.Services.AppSettings;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Security;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,7 +18,7 @@ namespace PicoShelter_DesktopApp.ViewModels
     {
         public LoginViewModel()
         {
-            SignInCommand = new AsyncRelayCommand(SignInCallback, SignInException, () => !string.IsNullOrWhiteSpace(Login) && SecurePassword?.Length > 0 );
+            SignInCommand = new AsyncRelayCommand(SignInCallback, SignInException, () => !string.IsNullOrWhiteSpace(Login) && SecurePassword?.Length > 0);
 
             SignInSessionCommand = new AsyncRelayCommand(SignInSessionCallback, SignInException);
         }
@@ -35,58 +28,58 @@ namespace PicoShelter_DesktopApp.ViewModels
             this.Owner = owner;
         }
 
-        private ApplicationViewModel owner { get; set; }
+        private ApplicationViewModel _owner { get; set; }
         public ApplicationViewModel Owner
         {
-            get => owner;
+            get => _owner;
             set
             {
-                owner = value;
+                _owner = value;
                 OnPropertyChanged();
             }
         }
 
-        private string login = "";
+        private string _login = "";
         public string Login
         {
-            get => login;
+            get => _login;
             set
             {
-                login = value;
+                _login = value;
                 OnPropertyChanged();
             }
         }
 
-        private SecureString securePassword;
+        private SecureString _securePassword;
         public SecureString SecurePassword
         {
-            get => securePassword;
+            get => _securePassword;
             set
             {
-                securePassword = value;
+                _securePassword = value;
                 OnPropertyChanged();
             }
         }
 
 
-        private bool isLoading = false;
+        private bool _isLoading = false;
         public bool IsLoading
         {
-            get => isLoading;
+            get => _isLoading;
             set
             {
-                isLoading = value;
+                _isLoading = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool invalidCredentialsWarn = false;
+        private bool _invalidCredentialsWarn = false;
         public bool InvalidCredentialsWarn
         {
-            get => invalidCredentialsWarn;
+            get => _invalidCredentialsWarn;
             set
             {
-                invalidCredentialsWarn = value;
+                _invalidCredentialsWarn = value;
                 OnPropertyChanged();
             }
         }
@@ -96,21 +89,21 @@ namespace PicoShelter_DesktopApp.ViewModels
 
         private async Task SignInCallback()
         {
-            this.IsLoading = true;
+            IsLoading = true;
 
             LoginResponseDto response;
 
-            var isEmail = Regex.IsMatch(login, @"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$");
+            var isEmail = Regex.IsMatch(_login, @"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$");
             if (isEmail)
             {
-                response = await HttpService.Current.LoginByEmailAsync(login, new System.Net.NetworkCredential(string.Empty, SecurePassword).Password);
+                response = await HttpService.Current.LoginByEmailAsync(_login, new System.Net.NetworkCredential(string.Empty, SecurePassword).Password);
             }
             else
             {
-                response = await HttpService.Current.LoginAsync(login, new System.Net.NetworkCredential(string.Empty, SecurePassword).Password);
+                response = await HttpService.Current.LoginAsync(_login, new System.Net.NetworkCredential(string.Empty, SecurePassword).Password);
             }
 
-            this.IsLoading = false;
+            IsLoading = false;
 
             var settings = await AppSettingsProvider.ProvideAsync();
             settings.AccessToken = response.access_token;
@@ -121,11 +114,11 @@ namespace PicoShelter_DesktopApp.ViewModels
 
         private async Task SignInSessionCallback()
         {
-            this.IsLoading = true;
+            IsLoading = true;
 
             AccountInfoDto response = await HttpService.Current.GetCurrentUserAsync();
 
-            this.IsLoading = false;
+            IsLoading = false;
 
             Owner.CurrentUser = response;
             Owner.GoMain();
@@ -134,7 +127,7 @@ namespace PicoShelter_DesktopApp.ViewModels
         private void SignInException(Exception e)
         {
             {
-                this.IsLoading = false;
+                IsLoading = false;
 
                 if (e is HttpResponseException ex)
                 {
@@ -147,7 +140,7 @@ namespace PicoShelter_DesktopApp.ViewModels
                                 return;
                         }
                     }
-                    
+
                     if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                         return;
                 }
